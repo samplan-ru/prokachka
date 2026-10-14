@@ -513,6 +513,27 @@ section.vin{animation:viewin .26s ease-out}
 .pod.empty-pod{background:var(--sunk);box-shadow:none;min-height:60px}
 /* feed bubbles */
 .post{display:flex;gap:10px;align-items:flex-start;background:none;box-shadow:none;padding:0;border-radius:0}
+.flist{background:var(--panel);border:1px solid var(--edge);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
+.fpost{display:flex;gap:10px;padding:12px 14px;align-items:flex-start}
+.fpost+.fpost{border-top:1px solid var(--line)}
+.fpost.me{background:color-mix(in srgb,var(--honey-soft) 45%,var(--panel))}
+.fpost .fbody{flex:1;min-width:0}
+.fpost .fhd{display:flex;align-items:center;gap:8px;min-width:0}
+.fpost .fhd b{font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fpost .fhd small{margin-left:auto;font-size:12px;color:var(--soft);white-space:nowrap}
+.ftag{font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;padding:2px 7px;border-radius:999px;background:var(--sunk);color:var(--soft);white-space:nowrap}
+.ftag.h{background:var(--honey-soft);color:var(--honey-ink)}.ftag.b{background:var(--berry-soft);color:var(--berry)}.ftag.m{background:var(--mint-soft);color:var(--mint)}.ftag.s{background:var(--sky-soft);color:var(--sky)}
+.fpost .ftx{margin-top:4px;font-size:15px;line-height:1.45;overflow-wrap:anywhere;white-space:pre-wrap}
+.fpost.ev .ftx{color:var(--soft);font-size:14px}
+.fpost .fft{display:flex;align-items:center;gap:10px;margin-top:8px}
+.fpost .cheer{padding:5px 11px;font-size:13px}
+.fpost .cheer svg{width:16px;height:16px}
+.fpost .del{font-size:13px;color:var(--soft);padding:0;margin-left:auto}
+.flist.compact .fpost{padding:9px 12px}
+.flist.compact .ftx{font-size:14px}
+.flist.compact .fpost.ev .ftx{font-size:13px}
+#feedSeg{margin:0 0 10px}
+.hsrow .t small{display:block;font-weight:600;font-size:12px;color:var(--soft)}
 .post+.post{margin-top:12px}
 .post .bub{flex:1;min-width:0;background:var(--panel);border-radius:6px 18px 18px 18px;padding:10px 12px;box-shadow:var(--shadow)}
 .post .who{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
@@ -1085,7 +1106,7 @@ body.introlock{overscroll-behavior:none}
     <div class="seg themeseg" id="themeSeg"><button data-th="auto">Как в системе</button><button data-th="light">Светлая</button><button data-th="dark">Тёмная</button></div>
     <div class="sbtns" style="margin-top:10px"><button class="btn" id="homeCfg2">Главный экран</button><button class="btn" id="introAgain">Знакомство заново</button></div>
     <div class="sbtns"><button class="btn ghost" id="resetAll" style="margin:0 auto">Начать заново</button></div>
-    <p class="about">Прокачка · версия 1.0.23<br>Данные хранятся на этом устройстве</p>
+    <p class="about">Прокачка · версия 1.0.24<br>Данные хранятся на этом устройстве</p>
     </div>
   </section>
 </div>
@@ -1610,23 +1631,33 @@ function renderPpl(){const box=$('pplBody'),top=$('pplTop');
    '<h2>Рейтинг недели</h2>'+(rows.length?'<div class="podium">'+pod(top3[1],1)+pod(top3[0],0)+pod(top3[2],2)+'</div>':'<div class="empty"><b>Рейтинг пока пуст</b>Появится, когда игроки начнут записывать дела.</div>')+
    (rest.length?'<div class="board">'+rest.map((p,i)=>'<div class="r'+(p.id===CM.uid?' me':'')+'"><span class="pos">'+(i+4)+'</span>'+avaHTML(p.color,p.sym,'s')+'<span class="nm">'+nm(p)+'<small>уровень '+(p.lvl||1)+(p.streak?', серия '+p.streak:'')+(p.trust!==undefined?', доверие '+p.trust:'')+'</small></span><span class="v">'+p.v+'</span>'+pokeB(p)+'</div>').join('')+'</div>':'')+
    '<h2>Суд присяжных</h2><p class="lede">Три случайных игрока решают, похоже ли фото на выполнение. +3 кармы за вердикт.</p><div id="jury"></div>'+
-   '<h2>Лента</h2>'+(CM.canWrite?'<div class="compose"><textarea id="postIn" rows="1" maxlength="280" placeholder="Как прошёл день?" aria-label="Новая запись"></textarea><button class="btn soc" id="postGo">Отправить</button></div>':'')+
+   '<div class="hrow"><h2>Лента</h2><button class="link" id="feedCfgBtn">Настроить</button></div><div class="seg" id="feedSeg"><button data-v="all">Все</button><button data-v="text">Записи</button><button data-v="ev">События</button><button data-v="mine">Мои</button></div>'+(CM.canWrite?'<div class="compose"><textarea id="postIn" rows="1" maxlength="280" placeholder="Как прошёл день?" aria-label="Новая запись"></textarea><button class="btn soc" id="postGo">Отправить</button></div>':'')+
    '<div id="feed" style="margin-top:12px"></div>';
-  renderOnline();renderFeed();renderJury();
+  renderOnline();renderFeed();renderJury();const fcb=$('feedCfgBtn');if(fcb)fcb.onclick=feedSheet;const fsg=$('feedSeg');if(fsg)group(fsg,v=>{feedCfg().filter=v;save();renderFeed()});
   box.querySelectorAll('.poke').forEach(b=>b.onclick=()=>{$('newCh').click();setTimeout(()=>{const c=$('cWho')&&$('cWho').querySelector('[data-v="'+CSS.escape(b.dataset.p)+'"]');c&&c.click()},60)});
   const pi=$('postIn');if(pi){pi.value=postDraft;pi.oninput=()=>{postDraft=pi.value;pi.style.height='auto';pi.style.height=pi.scrollHeight+'px'};$('postGo').onclick=async()=>{const t=pi.value.trim();if(!t)return;$('postGo').disabled=true;const ok=await cmWrite(CM.db.collection('feed').doc(uid()),{by:CM.uid,nick:S.nick||'Игрок',color:S.color,sym:S.sym,kind:'text',text:t.slice(0,280),t:Date.now(),cheers:{}});if(ok){postDraft='';if(!S.seen.firstPost){S.seen.firstPost=1;award(20,'Первая запись в ленте')}else toast('Опубликовано')}$('postGo').disabled=false}}
   if(scroll!==null)scrollTo(0,scroll)}
 let postDraft='';
-function renderFeed(){const f=$('feed');if(!f)return;
-  if(!CM.feed.length){f.innerHTML='<div class="empty"><b>Лента пока пустая</b>Здесь появятся достижения игроков и их записи. Напиши первым.</div>';return}
+/* feed: flat serious list with filters and settings */
+const FEED_TAG={ach:['значок','h'],lvl:['уровень','h'],ev:['событие','s'],ch:['вызов','b'],log:['дело','m']};
+function feedCfg(){if(!S.feedCfg)S.feedCfg={filter:'all',ach:1,ch:1,log:1,compact:0,n:40};return S.feedCfg}
+function feedVisible(p){const c=feedCfg(),k=p.kind||'text';if(c.filter==='mine'&&p.by!==CM.uid)return false;if(c.filter==='text'&&k!=='text')return false;if(c.filter==='ev'&&k==='text')return false;
+  if(k==='ach'||k==='lvl')return !!c.ach;if(k==='ch')return !!c.ch;if(k==='log'||k==='ev')return !!c.log;return true}
+function renderFeed(){const f=$('feed');if(!f)return;const c=feedCfg();const seg=$('feedSeg');if(seg)seg.querySelectorAll('[data-v]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===c.filter));
+  const list=CM.feed.filter(feedVisible).slice(0,c.n||40);
+  if(!list.length){f.innerHTML='<div class="empty"><b>'+(CM.feed.length?'По этому фильтру пусто':'Лента пока пустая')+'</b>'+(CM.feed.length?'Выбери «Все» или измени настройки ленты.':'Здесь появятся записи и события игроков. Напиши первым.')+'</div>';return}
   const HEART='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg>';
-  f.innerHTML='';CM.feed.forEach(p=>{const ch=Object.keys(p.cheers||{}),mine=ch.includes(CM.uid),ev=p.kind!=='text',d=document.createElement('div');d.className='post'+(ev?' ev':'');const name=p.by===CM.uid?(S.nick||'Ты'):(p.nick||'Игрок');
-    if(ev)d.innerHTML='<div class="bub">'+avaHTML(p.color,p.sym,'xs')+'<span><b></b> <span class="tx"></span></span><button class="cheer'+(mine?' on':'')+'" aria-pressed="'+mine+'" aria-label="Лайк">'+HEART+(ch.length||'')+'</button></div>';
-    else d.innerHTML=avaHTML(p.color,p.sym,'s')+'<div class="bub"><div class="who"><b></b><small>'+ago(p.t)+'</small></div><div class="tx"></div><div class="ft"><button class="cheer'+(mine?' on':'')+'" aria-pressed="'+mine+'" aria-label="Лайк">'+HEART+(ch.length||'')+'</button>'+(p.by===CM.uid?'<button class="btn ghost" data-del style="margin-left:auto;font-size:13px">Удалить</button>':'')+'</div></div>';
-    d.querySelector('b').textContent=name;d.querySelector('.tx').textContent=p.text;
+  f.className='flist'+(c.compact?' compact':'');f.innerHTML='';
+  list.forEach(p=>{const ch=Object.keys(p.cheers||{}),mine=ch.includes(CM.uid),k=p.kind||'text',ev=k!=='text',tag=FEED_TAG[k],d=document.createElement('div');d.className='fpost'+(ev?' ev':'')+(p.by===CM.uid?' me':'');const name=p.by===CM.uid?(S.nick||'Ты'):(p.nick||'Игрок');
+    d.innerHTML=(c.compact?'':avaHTML(p.color,p.sym,'s'))+'<div class="fbody"><div class="fhd"><b></b>'+(tag?'<span class="ftag '+tag[1]+'">'+tag[0]+'</span>':'')+'<small>'+ago(p.t)+'</small></div><div class="ftx"></div><div class="fft"><button class="cheer'+(mine?' on':'')+'" aria-pressed="'+mine+'" aria-label="Лайк">'+HEART+'<span>'+(ch.length||'')+'</span></button>'+(p.by===CM.uid?'<button class="link del" data-del>Удалить</button>':'')+'</div></div>';
+    d.querySelector('.fhd b').textContent=name;d.querySelector('.ftx').textContent=p.text;
     const cb=d.querySelector('.cheer');cb.onclick=async()=>{if(!CM.canWrite||mine)return;cb.classList.add('on','pop');const ok=await cmWrite(CM.db.doc('feed/'+p.id),{cheers:{[CM.uid]:true}},true);if(ok&&p.by!==CM.uid){S.c.cheer++;award(2,'Лайк поставлен',cb)}};
     const del=d.querySelector('[data-del]');if(del)del.onclick=()=>confirmSheet('Удалить запись?','Она пропадёт из ленты у всех.','Удалить',()=>CM.db.doc('feed/'+p.id).delete().catch(()=>toast('Не удалось удалить')),true);
     f.appendChild(d)})}
+function feedSheet(){const c=feedCfg();const sw=(id,label,on,sub)=>'<div class="hsrow"><button class="sw" data-k="'+id+'" aria-pressed="'+!!on+'"><i></i></button><span class="t">'+label+(sub?'<small>'+sub+'</small>':'')+'</span></div>';
+  sheet('<h3>Лента</h3><p class="lede" style="margin:0 0 12px">Что показывать среди записей игроков.</p><div id="fsList">'+sw('ach','Значки и уровни',c.ach,'«получил значок», «достиг уровня»')+sw('ch','Вызовы и дуэли',c.ch,'кто кого вызвал и кто выполнил')+sw('log','Дела и итоги дня',c.log,'крупные записи, цель дня, босс')+sw('compact','Компактный вид',c.compact,'без аватаров, мельче')+'</div><label class="lbl">Сколько записей</label><div class="chips" id="fsN">'+[20,40,80].map(n=>'<button class="chip" data-v="'+n+'" aria-pressed="'+((c.n||40)===n)+'">'+n+'</button>').join('')+'</div><div class="sbtns"><button class="btn" id="fsX">Закрыть</button></div>');
+  $('fsList').querySelectorAll('.sw').forEach(b=>b.onclick=()=>{const k=b.dataset.k;c[k]=c[k]?0:1;b.setAttribute('aria-pressed',!!c[k]);save();renderFeed()});
+  group($('fsN'),v=>{c.n=+v;save();renderFeed()});$('fsX').onclick=closeSheet}
 function openCard(c){if(c.duel)return duelCard(c);const tk=c.takers||{},me=tk[CM.uid],mineC=c.by===CM.uid,expired=c.due<Date.now(),d=document.createElement('div');d.className='ch'+(expired?' fail':'');
   const done=Object.values(tk).filter(t=>t.st==='done'),inn=Object.values(tk);
   d.innerHTML='<div class="hd">'+avaHTML(c.color,c.sym,'s')+'<span class="who"><b></b> '+(c.to?(c.to===CM.uid?'бросил вызов тебе':'бросил вызов игроку '+esc(c.toNick||'')):'бросил вызов всем')+'<br>'+ago(c.t)+'</span></div><div class="bd"><div class="task"></div><div class="meta">'+chipsFor(c,me&&me.st==='done'?'done':expired?'fail':'x')+'<span class="chip-s">'+pl(inn.length,'участник','участника','участников')+'</span></div><div class="acts"></div></div>'+
