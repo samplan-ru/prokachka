@@ -763,13 +763,17 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .quiz .o button.no{border-color:var(--berry);background:var(--berry-soft)}
 .quiz .qr{font-size:13.5px;color:var(--soft);margin-top:8px;font-weight:700}
 /* onboarding week */
-.onbc{background:linear-gradient(135deg,#1d2140 0%,#2a2f5a 100%);color:#f5f6fb;border-radius:20px;padding:14px 16px;margin-top:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 18px 40px -20px rgba(22,26,51,.6)}
-.onbc .k{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#5fe0be}
-.onbc .t{font-family:var(--head);font-weight:700;font-size:17px;line-height:1.25;margin-top:4px}
-.onbc .hs{font-size:13.5px;color:#aeb3cf;font-style:italic;margin-top:4px}
-.onbc .btn{margin-top:10px;width:100%}
-.onbc.ok{background:linear-gradient(135deg,#0f8d70,#14a383)}
-.onbc.ok .k{color:#dcf4ec}
+.onbc{background:var(--panel);color:var(--ink);border:1px solid var(--edge);border-left:6px solid var(--mint);border-radius:20px;padding:12px 14px;margin-top:12px;box-shadow:var(--shadow)}
+.onbc .k{font-size:11.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--mint)}
+.onbc .t{font-family:var(--head);font-weight:700;font-size:16px;line-height:1.25;margin-top:3px}
+.onbc .hs{font-size:13px;color:var(--soft);font-style:italic;margin-top:3px}
+.onbc .days{display:flex;gap:5px;margin-top:9px}
+.onbc .days i{flex:1;height:5px;border-radius:3px;background:var(--sunk)}
+.onbc .days i.on{background:var(--mint)}
+.onbc .days i.now{background:color-mix(in srgb,var(--mint) 45%,var(--sunk))}
+.onbc .btn{margin-top:10px;width:auto;padding:9px 14px;font-size:14px}
+.onbc.ok{background:var(--mint-soft)}
+.onbc.ok .k{color:var(--mint)}
 /* lock teaser */
 .lockc{display:flex;align-items:center;gap:12px;border-radius:20px;padding:12px 14px;background:color-mix(in srgb,var(--panel) 70%,transparent);border:1px dashed var(--line);margin-top:30px}
 .lockc .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:none;background:var(--sunk);color:var(--soft)}
@@ -1016,7 +1020,7 @@ h2{font-size:21px;margin:26px 0 10px}
 
   <!-- ЛЮДИ -->
   <section id="v-ppl" hidden>
-    <div class="tophead th-people"><div class="th-t">Экипаж</div><div class="th-s" id="pplS"></div><div id="pplTop"></div></div>
+    <div class="tophead th-people"><div class="th-t">Команда</div><div class="th-s" id="pplS"></div><div id="pplTop"></div></div>
     <div class="sec" data-sec="ppl-body"><div id="pplBody"></div></div>
   </section>
 
@@ -1077,7 +1081,7 @@ h2{font-size:21px;margin:26px 0 10px}
     <div class="seg themeseg" id="themeSeg"><button data-th="auto">Как в системе</button><button data-th="light">Светлая</button><button data-th="dark">Тёмная</button></div>
     <div class="sbtns" style="margin-top:10px"><button class="btn" id="homeCfg2">Главный экран</button><button class="btn" id="introAgain">Знакомство заново</button></div>
     <div class="sbtns"><button class="btn ghost" id="resetAll" style="margin:0 auto">Начать заново</button></div>
-    <p class="about">Прокачка · версия 1.0.19<br>Данные хранятся на этом устройстве</p>
+    <p class="about">Прокачка · версия 1.0.20<br>Данные хранятся на этом устройстве</p>
     </div>
   </section>
 </div>
@@ -1778,9 +1782,9 @@ const LOOK_SKIN=[['#F1C9A5','#E0B08A'],['#D9A47A','#C48A5E'],['#A9754F','#8E5E3B
 const LOOK_HAIR=['#262636','#5A3A22','#8C6A3F','#B9B9C2'];
 const OUTFITS={
  base:{n:'Базовый',shirt:'#14A383',shirt2:'#0F8D70',pants:'#262A44',shoes:'#F3F4F9'},
- rechnik:{n:'Речник',shirt:'#1F2A5C',shirt2:'#2E3B7A',pants:'#1A1E3A',shoes:'#F3F4F9',cap:'#F3F4F9',capband:'#1F2A5C',buttons:true},
+ rechnik:{n:'Классика',shirt:'#1F2A5C',shirt2:'#2E3B7A',pants:'#1A1E3A',shoes:'#F3F4F9',cap:'#F3F4F9',capband:'#1F2A5C',buttons:true},
  workout:{n:'Воркаут',shirt:'#14A383',shirt2:'#0F8D70',pants:'#1B1E33',shoes:'#F3F4F9',tank:true},
- vahta:{n:'Вахтовик',shirt:'#F08A24',shirt2:'#D9741A',pants:'#2B2F4A',shoes:'#3A2A1A',cap:'#F5A623',capband:'#F08A24',stripes:true},
+ vahta:{n:'Рабочий',shirt:'#F08A24',shirt2:'#D9741A',pants:'#2B2F4A',shoes:'#3A2A1A',cap:'#F5A623',capband:'#F08A24',stripes:true},
  city:{n:'Городской',shirt:'#3B3F5C',shirt2:'#2F3350',pants:'#262A44',shoes:'#F3F4F9',hood:true}};
 function lookState(){if(!S.look)S.look={outfit:'base',skin:0,hair:0};return S.look}
 function heroSVG(st,pose){const stage=bodyStage(st),form=st.reduce((a,s)=>a+s.f,0)/st.length,look=lookState(),o=OUTFITS[look.outfit]||OUTFITS.base,[SKIN,SKIN2]=LOOK_SKIN[look.skin]||LOOK_SKIN[0],HAIR=LOOK_HAIR[look.hair]||LOOK_HAIR[0],INK='#161A33',ACC=S.color;
@@ -1831,7 +1835,7 @@ function heroSVG(st,pose){const stage=bodyStage(st),form=st.reduce((a,s)=>a+s.f,
    '<circle cx="0" cy="120" r="92" fill="url(#gRing)"/><ellipse cx="0" cy="252" rx="'+(shw*.7+22)+'" ry="9" fill="#000" fill-opacity=".35" filter="url(#blur8)"/>'+
    '<g class="bodyg" transform="translate(0,38) scale(0.7) translate(-110,-30)">'+g.join('')+sparks+'</g></svg>'}
 function lookSheet(){const look=lookState();let out=look.outfit,sk=look.skin,hr=look.hair;const st=statsNow();
-  sheet('<h3>Внешность героя</h3><p class="lede" style="margin:0 0 10px">Одежда, кожа и волосы. Цвет экипажа — из твоего профиля. Снаряжение из магазина надевается поверх.</p><div class="preview" id="lkPrev"></div>'+
+  sheet('<h3>Внешность героя</h3><p class="lede" style="margin:0 0 10px">Одежда, кожа и волосы. Цвет команды — из твоего профиля. Снаряжение из магазина надевается поверх.</p><div class="preview" id="lkPrev"></div>'+
    '<span class="lbl">Одежда</span><div class="chips" id="lkOut">'+Object.entries(OUTFITS).map(([k,v])=>'<button class="chip" data-v="'+k+'" aria-pressed="'+(k===out)+'">'+v.n+'</button>').join('')+'</div>'+
    '<span class="lbl">Кожа</span><div class="pick" id="lkSkin" style="grid-template-columns:repeat(6,minmax(0,1fr))">'+LOOK_SKIN.map((c,i)=>'<button data-v="'+i+'" aria-pressed="'+(i===sk)+'" style="background:'+c[0]+'"></button>').join('')+'</div>'+
    '<span class="lbl">Волосы</span><div class="pick" id="lkHair" style="grid-template-columns:repeat(6,minmax(0,1fr))">'+LOOK_HAIR.map((c,i)=>'<button data-v="'+i+'" aria-pressed="'+(i===hr)+'" style="background:'+c+'"></button>').join('')+'</div>'+
@@ -2013,7 +2017,7 @@ function renderHints(){}
 
 /* ================= shell ================= */
 /* ================= reading: pack ================= */
-const READ_TOPICS=[['biz','Бизнес и биографии','кто и как построил дело'],['fleet','Флот и река','суда, вода, навигация'],['money','Деньги','кредиты, вклады, подушка'],['nature','Природа','факты для разговора за столом'],['science','Наука и техника','что реально работает'],['history','История','экспедиции и решения'],['sport','Спорт и тело','тренироваться с умом'],['home','Семья и дом','после вахты и в быту']];
+const READ_TOPICS=[['biz','Бизнес и биографии','кто и как построил дело'],['fleet','Техника','как устроены машины, суда, навигация'],['money','Деньги','кредиты, вклады, подушка'],['nature','Природа','факты для разговора за столом'],['science','Наука и техника','что реально работает'],['history','История','экспедиции и решения'],['sport','Спорт и тело','тренироваться с умом'],['home','Семья и дом','быт, отношения, дети']];
 const READ_KIND={bio:['Биография',15],hist:['История',15],fact:['Факт',10],useful:['Полезное',15]};
 const READ_PACK=[
 {id:'ford',topic:'biz',kind:'bio',t:'Генри Форд: как конвейер сделал машину дешевле лошади',min:3,src:'по открытым биографиям и истории Ford Motor Company',quote:'Думаешь, что можешь, или думаешь, что не можешь, — ты прав в обоих случаях.',
@@ -2136,7 +2140,7 @@ const READ_PACK=[
  'Тот же принцип у летучих мышей и дельфинов, которые различают эхом проволоку толщиной в волос. И у судового эхолота, который по форме эха отличает ил от камня: мягкое дно размазывает отражение, твёрдое — возвращает резкий сигнал.'],
  take:['Глубина — это время: измерь время точно, и получишь расстояние.','Прибор точен ровно настолько, насколько верны его допущения.','Форма ответа говорит больше, чем сам факт ответа.'],
  q:{t:'Что измеряет эхолот напрямую?',o:['Глубину','Время между импульсом и эхом','Плотность воды'],a:1}},
-{id:'battery',topic:'science',kind:'useful',t:'Как продлить жизнь аккумулятору телефона на вахте',min:2,src:'инженерные рекомендации по литий-ионным аккумуляторам',
+{id:'battery',topic:'science',kind:'useful',t:'Как продлить жизнь аккумулятору телефона в поездке',min:2,src:'инженерные рекомендации по литий-ионным аккумуляторам',
  body:['Литий-ионный аккумулятор стареет от двух вещей: от циклов и от времени при неудачных условиях. Хуже всего ему жарко и «под завязку»: долгое хранение при ста процентах и высокой температуре съедает ёмкость быстрее, чем сами зарядки.',
  'Практика: держать заряд между двадцатью и восьмьюдесятью процентами, не оставлять телефон на солнце или на горячей панели, заряжать понемногу, а не «до полного раз в сутки». Современные телефоны умеют ограничивать заряд восьмьюдесятью процентами — включи это, если не нужен полный запас.',
  'Мороз не убивает аккумулятор, но временно снижает ёмкость; заряжать на морозе — вредно. Выключение телефона на долгое хранение лучше делать при половине заряда, а не при нуле.'],
@@ -2151,13 +2155,13 @@ const READ_PACK=[
 {id:'sleep',topic:'sport',kind:'useful',t:'Сон — это тренировка, которую ты пропускаешь',min:2,src:'физиология восстановления, общие рекомендации',
  body:['Мышцы растут не на тренировке, а после неё — во сне, когда идёт восстановление тканей и вырабатывается гормон роста. Семь–девять часов — норма для взрослого, и недосып напрямую бьёт по результатам: падает сила, точность, выносливость и растёт риск травмы.',
  'Сменный график ломает сон сильнее, чем кажется. Помогают постоянное время отбоя даже в выходные, тёмная и прохладная каюта, отказ от экрана за час до сна и от кофе после обеда. Короткий дневной сон до тридцати минут восстанавливает, длиннее — ломает ночь.',
- 'Простое правило вахты: если выбор между лишней тренировкой и лишним часом сна — выбирай сон. Тренировка на недосыпе даёт меньше, а стоит дороже.'],
+ 'Простое правило: если выбор между лишней тренировкой и лишним часом сна — выбирай сон. Тренировка на недосыпе даёт меньше, а стоит дороже.'],
  take:['Рост происходит во сне; тренировка — только запрос на него.','Постоянное время отбоя важнее идеальной длительности.','Дневной сон до тридцати минут — инструмент, дольше — вред.'],
  q:{t:'Какая длительность дневного сна помогает, а не мешает?',o:['До тридцати минут','Два часа','Любая'],a:0}},
-{id:'return',topic:'home',kind:'useful',t:'Первые три дня дома после вахты',min:2,src:'практика семей с вахтовым графиком',
+{id:'return',topic:'home',kind:'useful',t:'Первые три дня дома после долгой поездки',min:2,src:'практика семей, где один часто в отъезде',
  body:['Пока тебя не было, дом жил по своим правилам: кто когда встаёт, кто моет посуду, где лежат ключи. Самая частая ошибка первых дней — прийти и «навести порядок». Для тех, кто держал дом, это звучит как «вы всё делали неправильно».',
  'Правило трёх дней: первые три дня ничего не перестраивать. Наблюдать, помогать там, где просят, и говорить спасибо за то, что всё работало без тебя. Хочешь что-то изменить — предложи на четвёртый день и спроси, удобно ли это им.',
- 'С детьми — то же самое: не лавина подарков и не воспитание с порога, а время. Полчаса своего внимания каждый день первых трёх дней стоят больше, чем большой подарок. Сон после смены часовых поясов и вахтового ритма тоже стоит планировать, а не «как получится».'],
+ 'С детьми — то же самое: не лавина подарков и не воспитание с порога, а время. Полчаса своего внимания каждый день первых трёх дней стоят больше, чем большой подарок. Сон после смены часовых поясов и сменного ритма тоже стоит планировать, а не «как получится».'],
  take:['Три дня — смотреть и помогать, на четвёртый — предлагать.','Благодарность за то, что дом работал без тебя, — первый разговор.','Время с детьми важнее подарка, особенно короткое и каждый день.'],
  q:{t:'Что советует правило трёх дней?',o:['Сразу навести свой порядок','Три дня не перестраивать, наблюдать и помогать','Уехать на рыбалку'],a:1}}
 ];
@@ -2211,7 +2215,7 @@ const ONB=[{t:'Назови имя, выбери темы и запиши пер
 function renderOnb(){const el=$('onb');if(!el)return;S.onb=S.onb||{start:Date.now(),done:{}};const day=Math.floor((Date.now()-S.onb.start)/DAY)+1;
   if(day>7||S.onb.off){el.innerHTML='';return}const i=Math.min(day,7)-1,o=ONB[i],was=!!S.onb.done[day],ok=o.ok();
   if(ok&&!was){S.onb.done[day]=1;if(o.shield){S.shields=(S.shields||0)+1}setTimeout(()=>{award(15,'Неделя новичка: день '+day);if(o.shield)toast('<b>Щит серии</b>за первое подтверждение');if(day===7){S.onb.off=1;save();render()}},400)}
-  el.innerHTML='<div class="onbc'+(ok?' ok':'')+'"><div class="k">Неделя новичка · день '+day+' из 7'+(ok?' · выполнено':'')+'</div><div class="t">'+esc(o.t)+'</div><div class="hs">«'+esc(o.h)+'»</div>'+(ok?'':'<button class="btn go" id="onbGo">'+o.b+'</button>')+'</div>';
+  el.innerHTML='<div class="onbc'+(ok?' ok':'')+'"><div class="k">Неделя новичка · день '+day+' из 7'+(ok?' · выполнено':'')+'</div><div class="t">'+esc(o.t)+'</div><div class="hs">«'+esc(o.h)+'»</div><div class="days">'+[1,2,3,4,5,6,7].map(i=>'<i class="'+(S.onb.done[i]?'on':i===day?'now':'')+'"></i>').join('')+'</div>'+(ok?'':'<button class="btn go" id="onbGo">'+o.b+'</button>')+'</div>';
   const b=$('onbGo');if(b)b.onclick=o.go}
 
 /* ================= progressive disclosure ================= */
@@ -2222,21 +2226,21 @@ function heroSays(){const le=S.earn.length?S.earn[S.earn.length-1].t:0,days=le?M
   if(S.logs.length<3)return'Начали. Пока я щуплый, но у меня есть ты.';
   if(days>=3)return days+'-й день без тебя. Спина затекла. Я не давлю — просто стою тут, сутулюсь.';
   if(st>=30)return'Тридцать дней подряд. Это уже не серия, это характер.';
-  if(st>=7)return'Неделя подряд. Я запомнил. И экипаж тоже.';
+  if(st>=7)return'Неделя подряд. Я запомнил. И команда тоже.';
   if(form<15)return'Форма тает. Начнём с десяти — и вернём за неделю.';
   if(form>70)return'На этой неделе мы кого-то обгоним.';
   return'Нормальный день. Держим ритм.'}
 
 /* ================= territories (training mode) ================= */
-const TERR_SYS=[{id:'turn',n:'Турникмены',c:'#e0457b',pw:1.0,d:'Качают силу. Нападают чаще других.'},{id:'vahta',n:'Вахта-15',c:'#f08a24',pw:0.8,d:'Выносливые. Крепко держат оборону.'},{id:'night',n:'Ночная смена',c:'#8a5cf0',pw:0.6,d:'Умники. Растут по ночам.'},{id:'port',n:'Портовые',c:'#2a9fbc',pw:0.7,d:'Речники из порта. Приходят на третий день.'}];
-const TERR_SPECIAL={'2-2':{t:'Турник у вокзала',k:'турник',stat:'str',min:25,types:['push','pull'],bonus:5},'4-1':{t:'Стадион «Волна»',k:'стадион',stat:'legs',min:25,types:['squat','km'],bonus:5},'4-5':{t:'Библиотека',k:'библиотека',stat:'mind',min:20,types:['pages','study'],bonus:5},'6-3':{t:'Речной порт',k:'порт',stat:'endur',min:20,types:['km'],bonus:5},'3-3':{t:'Парк Победы',k:'парк',stat:null,min:0,types:[],bonus:5},'1-5':{t:'Рубка',k:'рубка',stat:'will',min:30,types:[],bonus:5},'0-3':{t:'Старый турник',k:'легендарное место',stat:'str',min:60,types:['push','pull'],bonus:10,legend:true}};
-const TERR_ICON={'турник':'<path d="M4 8h16M8 8v10M16 8v10"/>','стадион':'<path d="M6 21V4h11l-2.5 4 2.5 4H6"/>','библиотека':'<path d="M4 5h7v14H4zM13 5h7v14h-7z"/>','порт':'<circle cx="12" cy="5" r="2"/><path d="M12 7v13M5 13a7 7 0 0 0 14 0"/>','парк':'<path d="m12 3 6 9h-4l4 6H6l4-6H6zM12 18v3"/>','рубка':'<circle cx="12" cy="12" r="7"/><path d="M12 5v14M5 12h14"/>','легендарное место':'<path d="m12 3 2.7 5.6 6.3.9-4.5 4.4 1 6.1-5.5-2.9-5.5 2.9 1-6.1L3 9.5l6.3-.9z"/>'};
+const TERR_SYS=[{id:'turn',n:'Турникмены',c:'#e0457b',pw:1.0,d:'Качают силу. Нападают чаще других.'},{id:'vahta',n:'Марафонцы',c:'#f08a24',pw:0.8,d:'Выносливые. Крепко держат оборону.'},{id:'night',n:'Ночная смена',c:'#8a5cf0',pw:0.6,d:'Умники. Растут по ночам.'},{id:'port',n:'Книжники',c:'#2a9fbc',pw:0.7,d:'Читают и считают. Приходят на третий день.'}];
+const TERR_SPECIAL={'2-2':{t:'Турник у вокзала',k:'турник',stat:'str',min:25,types:['push','pull'],bonus:5},'4-1':{t:'Стадион «Волна»',k:'стадион',stat:'legs',min:25,types:['squat','km'],bonus:5},'4-5':{t:'Библиотека',k:'библиотека',stat:'mind',min:20,types:['pages','study'],bonus:5},'6-3':{t:'Набережная',k:'набережная',stat:'endur',min:20,types:['km'],bonus:5},'3-3':{t:'Парк Победы',k:'парк',stat:null,min:0,types:[],bonus:5},'1-5':{t:'Башня',k:'башня',stat:'will',min:30,types:[],bonus:5},'0-3':{t:'Старый турник',k:'легендарное место',stat:'str',min:60,types:['push','pull'],bonus:10,legend:true}};
+const TERR_ICON={'турник':'<path d="M4 8h16M8 8v10M16 8v10"/>','стадион':'<path d="M6 21V4h11l-2.5 4 2.5 4H6"/>','библиотека':'<path d="M4 5h7v14H4zM13 5h7v14h-7z"/>','набережная':'<path d="M3 10c2-2 4-2 6 0s4 2 6 0 4-2 6 0M3 16c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/>','парк':'<path d="m12 3 6 9h-4l4 6H6l4-6H6zM12 18v3"/>','башня':'<path d="M8 21V9l4-4 4 4v12M8 13h8M5 21h14"/>','легендарное место':'<path d="m12 3 2.7 5.6 6.3.9-4.5 4.4 1 6.1-5.5-2.9-5.5 2.9 1-6.1L3 9.5l6.3-.9z"/>'};
 const TERR_COLS=7,TERR_ROWS=8,TERR_SEASON=35*DAY,STAT_N={str:'Сила',legs:'Ноги',mind:'Ум',endur:'Выносливость',will:'Воля'};
 function terrState(){if(!S.terr){const cells={};for(let r=0;r<TERR_ROWS;r++)for(let c=0;c<TERR_COLS;c++){const id=r+'-'+c,sp=TERR_SPECIAL[id];let owner=null;if(r>=1&&r<=2&&c>=1&&c<=3)owner='turn';if(r>=3&&r<=5&&c<=1)owner='vahta';if(r>=3&&r<=5&&c>=4)owner='night';const base=sp?(sp.legend?2500:1500):1000;cells[id]={owner,base,def:owner?base:0,since:owner?Date.now()-5*DAY:0,truce:0}}
-  S.terr={cells,clan:{n:'Мой экипаж'},reserve:0,claim:null,siege:null,incoming:null,nextAttack:0,season:{start:Date.now(),pts:0,n:1},lastDay:dkey(),log:[],sel:null,unread:0,help:0,clan4:0}}
-  const T=S.terr;T.unread=T.unread||0;T.log=T.log||[];return T}
+  S.terr={cells,clan:{n:'Моя команда'},reserve:0,claim:null,siege:null,incoming:null,nextAttack:0,season:{start:Date.now(),pts:0,n:1},lastDay:dkey(),log:[],sel:null,unread:0,help:0,clan4:0}}
+  const T=S.terr;T.unread=T.unread||0;T.log=T.log||[];if(T.clan&&T.clan.n==='Мой экипаж')T.clan.n='Моя команда';return T}
 const terrName=id=>TERR_SPECIAL[id]?TERR_SPECIAL[id].t:'Клетка '+(+id.split('-')[0]+1)+'-'+(+id.split('-')[1]+1);
-const terrClan=o=>o==='me'?{id:'me',n:terrState().clan.n,c:S.color,pw:1,d:'Твой экипаж.'}:TERR_SYS.find(x=>x.id===o);
+const terrClan=o=>o==='me'?{id:'me',n:terrState().clan.n,c:S.color,pw:1,d:'Твоя команда.'}:TERR_SYS.find(x=>x.id===o);
 function terrOwn(){const T=terrState();return Object.keys(T.cells).filter(id=>T.cells[id].owner==='me')}
 function terrCount(o){const T=terrState();return Object.values(T.cells).filter(x=>x.owner===o).length}
 function terrBonus(){const T=terrState();return Math.min(20,terrOwn().reduce((a,id)=>a+(TERR_SPECIAL[id]?TERR_SPECIAL[id].bonus:2),0))}
@@ -2267,7 +2271,7 @@ function terrApplyReserve(kind,id,amt){const T=terrState();amt=Math.min(amt,T.re
 function terrTick(){if(terrTick.busy)return;const T=terrState(),now=Date.now();let changed=false;const later=[];terrTick.busy=true;try{
   if(T.lastDay!==dkey()){const own=terrOwn();T.season.pts+=own.reduce((a,id)=>a+(TERR_SPECIAL[id]?(TERR_SPECIAL[id].legend?10:3):1),0);T.lastDay=dkey();changed=true}
   if(now-T.season.start>TERR_SEASON){Object.values(T.cells).forEach(c=>{if(c.owner)c.def=c.base});terrEvent('season','Сезон '+T.season.n+' завершён: '+T.season.pts+' очков сезона');T.season={start:now,pts:0,n:T.season.n+1};changed=true}
-  if(!T.clan4&&now-T.season.start>2*DAY){T.clan4=1;['6-4','6-5','7-4','7-5'].forEach(id=>{const c=T.cells[id];if(c&&!c.owner){c.owner='port';c.def=c.base;c.since=now}});terrEvent('clan','Новый клан на карте: Портовые заняли четыре клетки у порта');changed=true}
+  if(!T.clan4&&now-T.season.start>2*DAY){T.clan4=1;['6-4','6-5','7-4','7-5'].forEach(id=>{const c=T.cells[id];if(c&&!c.owner){c.owner='port';c.def=c.base;c.since=now}});terrEvent('clan','Новый клан на карте: Книжники заняли четыре клетки на юге');changed=true}
   if(T.claim&&now>=T.claim.end){const cl=T.claim,c=T.cells[cl.cell];T.claim=null;changed=true;if(cl.pts>=cl.need&&!c.owner){c.owner='me';c.def=c.base;c.since=now;terrEvent('won','Заняли: '+terrName(cl.cell));later.push([40,'Клетка занята: '+terrName(cl.cell),10,'клетка на карте']);if(!T.nextAttack)T.nextAttack=now+(2+Math.random()*2)*DAY}else{T.reserve+=Math.round(cl.pts/2);terrEvent('fail','Заявка не прошла: '+terrName(cl.cell)+' ('+cl.pts+' из '+cl.need+'), половина очков вернулась в резерв')}}
   if(T.siege){const sg=T.siege,c=T.cells[sg.cell],clan=terrClan(c.owner)||{pw:.8},el=Math.min(1,(now-sg.start)/(sg.end-sg.start));sg.defAdd=Math.round(c.base*clan.pw*0.5*el);
     if(now>=sg.end){const def=Math.round(sg.def0+sg.defAdd);T.siege=null;changed=true;if(sg.atk>def){c.owner='me';c.def=c.base;c.since=now;c.truce=now+72*36e5;terrEvent('won','Взяли '+terrName(sg.cell)+': '+sg.atk+' против '+def);later.push([60,'Осада выиграна: '+terrName(sg.cell),20,'победа в осаде']);if(!T.nextAttack)T.nextAttack=now+(2+Math.random()*2)*DAY}else{c.def=Math.round(c.def*1.1);c.truce=now+72*36e5;terrEvent('fail','Осада отбита: '+sg.atk+' против '+def+' · перемирие 72 ч')}}}
@@ -2307,14 +2311,14 @@ function terrClansHTML(){const T=terrState(),now=Date.now();const rows=[['me',te
 function terrNowHTML(){const st=terrStatus();return'<div class="nowc '+st.c+' tnow"><span class="ic">'+ic(st.kind==='attack'?'<path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/>':st.kind==='siege'?'<path d="m14.5 17.5 5-5M17 20l4-4M3 21l6-6M13 11 6 4M4 3l16 16"/>':st.kind==='claim'?'<path d="M4 20h4l10-10-4-4L4 16z"/>':st.kind==='news'?'<path d="M6 8a6 6 0 0 1 12 0v5l2 3H4l2-3zM10 20h4"/>':'<path d="M3 11 12 4l9 7v9H3z"/>')+'</span><div class="txt"><div class="t">'+esc(st.t)+'</div><div class="s">'+esc(st.s)+'</div></div>'+(st.cell?'<button class="btn" data-cell="'+st.cell+'">'+st.b+'</button>':'')+'</div>'}
 function renderTerr(){const el=$('terr');if(!el)return;const T=terrState();terrTick();const own=terrOwn(),now=Date.now();T.unread=0;
   const logIc={attack:['b','⚔'],lost:['b','–'],hold:['m','✓'],won:['m','+'],fail:['h','×'],claim:['h','…'],clan:['h','!'],season:['h','★'],info:['h','·']};
-  const clanCard='<div class="cell clanc"><div style="display:flex;align-items:center;gap:12px"><span class="crest" style="background:'+S.color+'">'+ic('<path d="M3 17c2 1.5 4 1.5 6 0s4-1.5 6 0 4 1.5 6 0M4 15l1-5h14l1 5M8 10V6h8v4M12 3v3"/>')+'</span><div style="flex:1;min-width:0"><div class="t" style="display:flex;align-items:center;gap:8px">'+esc(T.clan.n)+'<button class="link" id="tRename" style="font-size:13px">изменить</button></div><div class="s">Сезон '+T.season.n+' · '+Math.max(0,Math.ceil((T.season.start+TERR_SEASON-now)/DAY))+' дн. до конца · тренировочный режим</div></div></div>'+
+  const clanCard='<div class="cell clanc"><div style="display:flex;align-items:center;gap:12px"><span class="crest" style="background:'+S.color+'">'+ic('<path d="M12 2 4 6v6c0 5 3.5 8.5 8 10 4.5-1.5 8-5 8-10V6z"/><path d="m9 12 2 2 4-4"/>')+'</span><div style="flex:1;min-width:0"><div class="t" style="display:flex;align-items:center;gap:8px">'+esc(T.clan.n)+'<button class="link" id="tRename" style="font-size:13px">изменить</button></div><div class="s">Сезон '+T.season.n+' · '+Math.max(0,Math.ceil((T.season.start+TERR_SEASON-now)/DAY))+' дн. до конца · тренировочный режим</div></div></div>'+
    '<div class="cstats"><div><b>'+own.length+'</b><span>клеток</span></div><div><b>+'+terrBonus()+'%</b><span>XP бонус</span></div><div><b>'+T.season.pts+'</b><span>очки сезона</span></div><div><b>'+T.reserve+'</b><span>резерв</span></div></div></div>';
   const introCh=typeof introOn==='function'&&introOn('ch');
   el.innerHTML=(T.help||introCh?'':terrHelpHTML())+terrNowHTML()+
    '<div class="hexwrap">'+terrHex()+'</div><div class="legend"><span style="background:'+S.color+'"><i></i>'+esc(T.clan.n)+' · '+own.length+'</span>'+TERR_SYS.filter(c=>c.id!=='port'||T.clan4).map(c=>'<span style="background:'+c.c+'"><i></i>'+c.n+' · '+terrCount(c.id)+'</span>').join('')+'<span style="background:#2a2e50"><i style="opacity:.5"></i>ничьи · '+terrCount(null)+'</span></div>'+
    '<div class="iconrow">'+Object.entries(TERR_ICON).map(([k,p])=>'<span><svg viewBox="0 0 24 24" fill="'+(k==='легендарное место'?'currentColor':'none')+'" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'+p+'</svg>'+(k==='легендарное место'?'легенда':k)+'</span>').join('')+'</div>'+
    terrPanel()+clanCard+terrClansHTML()+(T.log.length?'<div class="cell"><div class="t" style="font-size:16px">Хроника</div>'+T.log.map(l=>{const [cl,sym]=logIc[l.k]||logIc.info;return'<div class="tlog"><span class="chip-s '+cl+'" style="flex:none;min-width:26px;text-align:center">'+sym+'</span><span style="flex:1">'+esc(l.t)+'</span><small>'+new Date(l.at).toLocaleDateString('ru-RU',{day:'numeric',month:'short'})+'</small></div>'}).join('')+'</div>':'')+
-   '<p class="lede" style="margin-top:12px">Тренировочный режим: кланы-соперники управляются игрой, пока нет живых экипажей. Правила те же, что будут на сервере.</p>';
+   '<p class="lede" style="margin-top:12px">Тренировочный режим: кланы-соперники управляются игрой, пока нет живых команд. Правила те же, что будут на сервере.</p>';
   el.querySelectorAll('.hx').forEach(p=>p.onclick=()=>{T.sel=p.dataset.id;save();renderTerr();const pn=el.querySelector('.cell.sel');if(pn)pn.scrollIntoView({behavior:'smooth',block:'nearest'})});
   el.querySelectorAll('[data-cell]').forEach(b=>b.onclick=()=>{T.sel=b.dataset.cell;save();renderTerr();const pn=el.querySelector('.cell.sel');if(pn)pn.scrollIntoView({behavior:'smooth',block:'center'})});
   const ho=$('terrHelpOk');if(ho)ho.onclick=()=>{T.help=1;save();renderTerr()};const hb=$('terrHelpBtn');if(hb)hb.onclick=()=>{T.help=0;save();renderTerr();scrollTo({top:el.getBoundingClientRect().top+scrollY-8,behavior:'smooth'})};
@@ -2322,7 +2326,7 @@ function renderTerr(){const el=$('terr');if(!el)return;const T=terrState();terrT
   const ts=$('tSiege');if(ts)ts.onclick=()=>{const c=T.cells[T.sel];T.siege={cell:T.sel,start:now,end:now+48*36e5,atk:0,def0:Math.round(c.def*1.15),defAdd:0};terrEvent('attack','Осада: '+terrName(T.sel)+' · 48 часов');T.unread=0;save();renderTerr();toast('Осада началась: 48 часов');snd('up')};
   const tf=$('tFort');if(tf)tf.onclick=()=>terrApplyReserve('fortify',T.sel,100);
   el.querySelectorAll('[data-res]').forEach(b=>b.onclick=()=>{const kind=T.incoming&&T.incoming.cell===T.sel?'defend':T.siege&&T.siege.cell===T.sel?'siege':'claim';terrApplyReserve(kind,T.sel,b.dataset.res==='all'?T.reserve:+b.dataset.res)});
-  const tr=$('tRename');if(tr)tr.onclick=()=>{sheet('<h3>Название экипажа</h3><input class="field" id="clanIn" maxlength="24" value="'+esc(T.clan.n)+'"><div class="sbtns"><button class="btn" id="cX">Отмена</button><button class="btn go" id="cOk2">Сохранить</button></div>');$('cX').onclick=closeSheet;$('cOk2').onclick=()=>{const v=$('clanIn').value.trim();if(v)T.clan.n=v.slice(0,24);save();closeSheet();renderTerr()}}}
+  const tr=$('tRename');if(tr)tr.onclick=()=>{sheet('<h3>Название команды</h3><input class="field" id="clanIn" maxlength="24" value="'+esc(T.clan.n)+'"><div class="sbtns"><button class="btn" id="cX">Отмена</button><button class="btn go" id="cOk2">Сохранить</button></div>');$('cX').onclick=closeSheet;$('cOk2').onclick=()=>{const v=$('clanIn').value.trim();if(v)T.clan.n=v.slice(0,24);save();closeSheet();renderTerr()}}}
 /* home-screen card */
 function renderMapBlock(){const el=$('mapBlock');if(!el)return;const T=terrState(),st=terrStatus();
   el.innerHTML='<div class="mapc '+st.c+'"><div class="mini">'+terrHex(true)+'</div><div class="tx"><div class="k">Карта региона'+(T.unread?' <span class="nb">'+T.unread+'</span>':'')+'</div><div class="t">'+esc(st.t)+'</div><div class="s">'+esc(st.s)+'</div><button class="btn go" id="mapGo">'+st.b+'</button></div></div>';
@@ -2342,17 +2346,17 @@ const INTRO={
   {sec:['read'],t:'Почитать',s:'Три коротких материала в день по твоим темам: биографии, факты, полезное. Прочитал и ответил на вопрос — растёт Ум. Без ленты и залипания.'},
   {sec:['week','boss'],t:'Испытание недели и босс',s:'Испытание — три порога за неделю: бронза, серебро, золото. Босс — общий противник всех игроков, каждое твоё дело бьёт по нему.'},
   {sec:['goals','mood','roul','bets'],t:'Цели и настроение',s:'Личные цели с прогрессом и отметка настроения в конце дня. Рулетка, пари и капсулы времени откроются с 5 уровня, чтобы первые дни не перегружать.'},
-  {tabs:true,t:'Вкладки внизу',s:'Арена — вызовы, дуэли и карта. Экипаж — люди. Дела — смены, деньги, даты. Герой — персонаж и внешность. В каждой вкладке такое же короткое знакомство. Главный экран настраивается: кнопка «Настроить экран» у приветствия.',b:'Готово'}],
+  {tabs:true,t:'Вкладки внизу',s:'Арена — вызовы, дуэли и карта. Команда — люди. Дела — смены, деньги, даты. Герой — персонаж и внешность. В каждой вкладке такое же короткое знакомство. Главный экран настраивается: кнопка «Настроить экран» у приветствия.',b:'Готово'}],
  ch:[
   {t:'Арена',s:'Сверху — рейтинг, лига и две кнопки: «Новый вызов» (себе или другу) и «Дуэль сейчас» (30 секунд вживую). Победы дают карму и рейтинг.'},
   {sec:['ch-list'],t:'Вызовы',s:'«Мои» — твои и принятые. «Для всех» — открытые вызовы сообщества. «Архив» — что уже было. Код от друга вводится внизу.'},
   {sec:['ch-list'],map:true,t:'Карта региона',s:'Серые клетки — ничьи: заявка на 24 часа. Цветные — чужие: осада на 48 часов. Очки идут только с подтверждённых дел. Кланы нападают сами — предупредят карточка «Сейчас» и значок на вкладке. Пока это тренировочный режим.',b:'Понятно'}],
  ppl:[
-  {t:'Экипаж',s:'Сверху — кто сейчас в игре и твоё место в рейтинге недели.'},
+  {t:'Команда',s:'Сверху — кто сейчас в игре и твоё место в рейтинге недели.'},
   {sec:['ppl-body'],t:'Рейтинг, присяжные, лента',s:'Рейтинг недели обнуляется в понедельник. Присяжные — три случайных игрока решают, похоже ли фото на выполнение, +3 кармы за вердикт. Лента — короткие посты, лайки дают карму.',b:'Понятно'}],
  life:[
   {t:'Дела',s:'Сверху — полоска смен на неделю, когда заполнишь график.'},
-  {sec:['life-tools'],t:'Инструменты',s:'Нажми плитку — откроется калькулятор: смены и вахта, кредит, отпуск, доход. Считается на телефоне, без сети.'},
+  {sec:['life-tools'],t:'Инструменты',s:'Нажми плитку — откроется калькулятор: смены и график, кредит, отпуск, доход. Считается на телефоне, без сети.'},
   {sec:['life-more'],t:'Копилки и даты',s:'Копилки с целью и сроком — каждое пополнение даёт XP. Важные даты напомнят заранее. Капсулы времени — с 5 уровня.',b:'Понятно'}],
  me:[
   {sec:['me-hero'],t:'Герой',s:'Это ты. Тело меняется от Силы и Ног, форма держится две недели. Нажми на героя — покажет мышцы. «Внешность» — одежда, кожа, волосы. «Магазин» — снаряжение за карму.'},
@@ -2382,10 +2386,9 @@ function introBar(tab){let bar=$('introBar');const on=INTRO[tab]&&introOn(tab);i
 function introCard(tab){const st=introState(),i=st[tab],steps=INTRO[tab];let card=$('introCard');if(!introOn(tab)){if(card)card.remove();return}
   const step=steps[i],key=tab+':'+i,fresh=!card||card.dataset.key!==key;
   if(!card){card=document.createElement('div');card.id='introCard';card.className='introc'}
-  if(fresh){card.dataset.key=key;const pt=step.tabs?'Вкладки появятся внизу экрана':step.map?'Карта — ниже':step.top?'':(step.sec?'Этот блок — ниже':'');card.innerHTML='<div class="k">Шаг '+(i+1)+' из '+steps.length+'</div><div class="t">'+step.t+'</div><div class="s">'+step.s+'</div>'+(pt?'<div class="pt">'+ic('<path d="M12 5v14M5 12l7 7 7-7"/>',2.6)+pt+'</div>':'');card.classList.toggle('nopt',!step.sec||!!step.top)}
+  if(fresh){card.dataset.key=key;const pt=step.tabs?'Вкладки появятся внизу экрана':step.map?'Карта — ниже':step.top?'':(step.sec?'Этот блок — ниже':'');card.innerHTML='<div class="k">Шаг '+(i+1)+' из '+steps.length+'</div><div class="t">'+step.t+'</div><div class="s">'+step.s+'</div>'+(pt?'<div class="pt">'+ic('<path d="M12 5v14M5 12l7 7 7-7"/>',2.6)+pt+'</div>':'');card.classList.toggle('nopt',!step.sec||!!step.top||!!step.tabs)}
   const box=$('v-'+tab);let anchor=null,before=false;
   if(step.sec&&step.sec.length){const first=box.querySelector('.sec[data-sec="'+step.sec[0]+'"]');if(first&&!first.hidden){anchor=first;before=true}}
-  if(!anchor&&step.tabs){const secs=[...box.querySelectorAll('.sec')].filter(s=>!s.hidden);anchor=secs[secs.length-1]}
   if(!anchor)anchor=box.querySelector('.tophead,.greetrow');
   if(anchor){if(before){if(anchor.previousElementSibling!==card)anchor.before(card)}else if(anchor.nextElementSibling!==card)anchor.after(card)}else if(box.firstElementChild!==card)box.prepend(card);
   if(fresh){card.classList.remove('reveal');void card.offsetWidth;card.classList.add('reveal')}
@@ -2398,7 +2401,8 @@ function introNext(tab){const st=introState(),steps=INTRO[tab];if(st[tab]>=steps
   if(nxt.map){chTab='map';const seg=$('chSeg');if(seg)seg.querySelectorAll('[data-v]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===chTab));renderCh()}
   const box=$('v-'+tab);(nxt.sec||[]).forEach(id=>{const s=box.querySelector('.sec[data-sec="'+id+'"]');if(s&&!s.hidden){s.classList.remove('reveal','glow');void s.offsetWidth;s.classList.add('reveal','glow');setTimeout(()=>s.classList.remove('glow'),2600)}});
   introCard(tab);snd('tick');if(navigator.vibrate)navigator.vibrate(8);
-  const card=$('introCard');setTimeout(()=>{if(nxt.top){scrollTo({top:0,behavior:'smooth'});return}const y=card.getBoundingClientRect().top+scrollY-10;scrollTo({top:Math.max(0,y),behavior:'smooth'})},80)}
+  const card=$('introCard'),topOf=el=>{let y=0;while(el){y+=el.offsetTop;el=el.offsetParent}return y},goal=()=>nxt.top||nxt.tabs?0:Math.max(0,topOf(card)-12);
+  setTimeout(()=>scrollTo({top:goal(),behavior:'smooth'}),60);setTimeout(()=>{if(Math.abs(scrollY-goal())>8)scrollTo({top:goal(),behavior:'smooth'})},750)}
 function introFinish(tab){const st=introState();st[tab]=INTRO[tab].length;if(tab==='ch'){if(S.terr)S.terr.help=1;chTab='mine';const seg=$('chSeg');if(seg)seg.querySelectorAll('[data-v]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===chTab))}
   save();const card=$('introCard');if(card)card.remove();applySecs();introBar(tab);render();if(tab==='day'){toast('Главный экран открыт. Вкладки — внизу');burst()}else toast('Знакомство с вкладкой завершено')}
 function introSkipAll(){const st=introState();Object.keys(INTRO).forEach(k=>st[k]=INTRO[k].length);save();const card=$('introCard');if(card)card.remove();applySecs();introBar(curView);render();toast('Знакомство пропущено. Вернуть можно в профиле')}
