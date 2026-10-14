@@ -1,4 +1,4 @@
-const V='prokachka-b441ee93';const SHELL=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-180.png'];
+const V='prokachka-83d40a87';const SHELL=['./','./index.html','./manifest.webmanifest','./icon-192.png','./icon-512.png','./icon-180.png'];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(V).then(async c=>{for(const u of SHELL){try{const r=await fetch(u,{cache:'reload'});if(r.ok)await c.put(u,r)}catch(err){}}}).then(()=>self.skipWaiting()))});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(ks=>Promise.all(ks.filter(k=>k!==V&&k!==V+'-fonts').map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener('fetch',e=>{const req=e.request;if(req.method!=='GET')return;const u=new URL(req.url);

@@ -534,6 +534,22 @@ section.vin{animation:viewin .26s ease-out}
 .flist.compact .fpost.ev .ftx{font-size:13px}
 #feedSeg{margin:0 0 10px}
 .hsrow .t small{display:block;font-weight:600;font-size:12px;color:var(--soft)}
+/* settings */
+.heroinfo{position:relative}.heroinfo .nm{padding-right:46px}
+.setgear{position:absolute;top:12px;right:14px;width:36px;height:36px;border-radius:12px;border:1px solid var(--edge);background:var(--sunk);color:var(--soft);display:grid;place-items:center;padding:0}
+.setgear svg{width:18px;height:18px}
+.setg{margin-top:14px}.setk{font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);margin:0 4px 6px}
+.setrow{display:flex;align-items:center;gap:12px;width:100%;background:var(--panel);border:1px solid var(--edge);border-radius:16px;padding:10px 12px;text-align:left;color:var(--ink);margin-top:6px;box-shadow:var(--shadow)}
+.setrow .t{flex:1;font-weight:800;min-width:0;font-size:15px}.setrow .t small{display:block;font-weight:600;font-size:12px;color:var(--soft);line-height:1.3}
+.setrow .chev{color:var(--soft);font-size:22px;line-height:1;padding-right:2px}
+.setrow .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--sunk);color:var(--sky);flex:none}.setrow .ic svg{width:18px;height:18px}
+.setrow .sw{width:46px;height:28px;border-radius:14px;border:0;background:var(--line);position:relative;flex:none;padding:0;transition:background .2s}
+.setrow .sw i{position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 2px 4px rgba(0,0,0,.2)}
+.setrow .sw[aria-pressed="true"]{background:var(--mint)}.setrow .sw[aria-pressed="true"] i{transform:translateX(18px)}
+.seg.mini{margin:0;padding:2px;flex:none;width:196px}.seg.mini button{padding:6px 4px;font-size:12px}
+.wn{margin-top:8px;border-top:1px solid var(--line);padding-top:6px}.wn div{display:flex;gap:8px;font-size:12.5px;padding:3px 0;color:var(--soft)}.wn b{color:var(--ink);font-family:var(--head);flex:none;width:46px}
+html.nomotion *{animation:none!important;transition:none!important}
+html.compact .app{zoom:.92}
 .post+.post{margin-top:12px}
 .post .bub{flex:1;min-width:0;background:var(--panel);border-radius:6px 18px 18px 18px;padding:10px 12px;box-shadow:var(--shadow)}
 .post .who{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
@@ -1068,7 +1084,7 @@ body.introlock{overscroll-behavior:none}
     <div class="sec" data-sec="me-hero">
     <div class="herocard">
       <div class="arena" id="arena"></div>
-      <div class="heroinfo"><div class="nm" id="pName"></div><div class="rk" id="pRank"></div><div class="hsay" id="hSay"></div>
+      <div class="heroinfo"><button class="setgear" id="setBtn" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button><div class="nm" id="pName"></div><div class="rk" id="pRank"></div><div class="hsay" id="hSay"></div>
         <div class="acts4"><button id="editMe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16z"/></svg>Профиль</button><button id="openShop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16l-1 12H5zM9 8V6a3 3 0 0 1 6 0v2"/></svg>Магазин</button><button id="lookBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3l4 2 4-2 4 4-2 3v11H6V10L4 7z"/></svg>Внешность</button><button id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 3v12M7 8l5-5 5 5"/></svg>Поделиться</button></div>
       </div>
     </div>
@@ -1102,11 +1118,9 @@ body.introlock{overscroll-behavior:none}
     <div class="badges" id="badges"></div>
     <h2>Ранги</h2>
     <div class="ranks" id="ranks"></div>
-    <h2>Оформление</h2>
-    <div class="seg themeseg" id="themeSeg"><button data-th="auto">Как в системе</button><button data-th="light">Светлая</button><button data-th="dark">Тёмная</button></div>
-    <div class="sbtns" style="margin-top:10px"><button class="btn" id="homeCfg2">Главный экран</button><button class="btn" id="introAgain">Знакомство заново</button></div>
-    <div class="sbtns"><button class="btn ghost" id="resetAll" style="margin:0 auto">Начать заново</button></div>
-    <p class="about">Прокачка · версия 1.0.24<br>Данные хранятся на этом устройстве</p>
+    <h2>Настройки</h2>
+    <div class="sbtns" style="margin-top:0"><button class="btn" id="setBtn2" style="flex:1">Открыть настройки</button></div>
+    <p class="about">Прокачка · версия 1.0.25<br>Данные хранятся на этом устройстве</p>
     </div>
   </section>
 </div>
@@ -1288,7 +1302,7 @@ function nextCele(){if(showing||!queue.length)return;showing=true;snd('up');cons
   if(q.k==='ach')c.innerHTML=MED(q.a.c[0],q.a.c[1],G[q.a.g])+'<div class="ttl">'+esc(q.a.t)+'</div><p>'+esc(q.a.s)+'. Новый значок в профиле.</p><button class="btn go" id="cOk">Забрать</button>';
   else c.innerHTML='<div class="lv">'+q.L+'</div><div class="ttl">'+(q.nr?'Ранг «'+esc(q.rank)+'»':'Уровень '+q.L)+'</div><p>'+(q.nr?'Новый ранг открыт. Так держать.':'До следующего уровня '+(lvlXp(q.L+1)-S.xp)+' XP.')+'</p><button class="btn go" id="cOk">Дальше</button>';
   $('cele').hidden=false;burst();$('cOk').focus();$('cOk').onclick=()=>{$('cele').hidden=true;showing=false;nextCele()}}
-function burst(){if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;const c=$('fx'),x=c.getContext('2d'),W=innerWidth,H=innerHeight,d=devicePixelRatio||1;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0);
+function burst(){if(matchMedia('(prefers-reduced-motion: reduce)').matches||S.motion===false)return;const c=$('fx'),x=c.getContext('2d'),W=innerWidth,H=innerHeight,d=devicePixelRatio||1;c.width=W*d;c.height=H*d;x.setTransform(d,0,0,d,0,0);
   const cols=['#14a383','#3b7ddd','#e0457b','#f5a623','#8a5cf0','#ffffff'],P=Array.from({length:100},()=>({x:W/2,y:H*.42,vx:(Math.random()-.5)*12,vy:-Math.random()*12-3,r:Math.random()*6.3,vr:(Math.random()-.5)*.3,w:6+Math.random()*7,h:4+Math.random()*5,c:cols[Math.random()*6|0],o:Math.random()<.4}));
   let f=0;(function loop(){x.clearRect(0,0,W,H);P.forEach(p=>{p.vy+=.33;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;x.save();x.translate(p.x,p.y);x.rotate(p.r);x.fillStyle=p.c;if(p.o){x.beginPath();x.arc(0,0,p.h/1.4,0,7);x.fill()}else x.fillRect(-p.w/2,-p.h/2,p.w,p.h);x.restore()});if(++f<120)requestAnimationFrame(loop);else x.clearRect(0,0,W,H)})()}
 
@@ -1596,9 +1610,10 @@ async function initLocalCommunity(){LDB.data();CM.db=LDB;CM.uid='me';CM.on=true;
   LDB.collection('challenges').orderBy('t','desc').limit(60).onSnapshot(s=>{CM.open=s.docs.map(d=>({id:d.id,...d.data()}));creditMine();renderCh()});
   LDB.collection('jury').orderBy('t','desc').limit(30).onSnapshot(s=>{CM.jury=s.docs.map(d=>({id:d.id,...d.data()}));renderJury()});
   BOTS.seed();syncPlayer();CM.room=LROOM;BOTS.tick();presence();setInterval(()=>BOTS.tick(),5*6e4);document.addEventListener('visibilitychange',()=>{if(!document.hidden)BOTS.tick()});renderPpl();renderCh()}
-async function initCommunity(){const cl=window.claude;if(!cl||!cl.use)return initLocalCommunity();
-  const[db,user]=await Promise.all([cl.use('db'),cl.use('user')]);if(!db||!user)return initLocalCommunity();
-  const id=await user.id();if(!id)return initLocalCommunity();
+const localOrOff=()=>S.botsOff?renderPpl():initLocalCommunity();
+async function initCommunity(){const cl=window.claude;if(!cl||!cl.use)return localOrOff();
+  const[db,user]=await Promise.all([cl.use('db'),cl.use('user')]);if(!db||!user)return localOrOff();
+  const id=await user.id();if(!id)return localOrOff();
   CM.db=db;CM.uid=id;CM.on=true;const cw=await user.can('data.write');if(cw===false)CM.canWrite=false;
   db.collection('players').orderBy('t','desc').limit(200).onSnapshot(s=>{CM.players=s.docs.map(d=>({id:d.id,...d.data()}));renderPpl();renderCh();renderBoss()},()=>{});
   db.collection('feed').orderBy('t','desc').limit(40).onSnapshot(s=>{const prev=CM.feed.length;CM.feed=s.docs.map(d=>({id:d.id,...d.data()}));noticeFeed(prev);renderPpl()},()=>{});
@@ -1745,11 +1760,10 @@ function tour(step){TOUR.on=true;
     $('tHab').onclick=()=>{const b=$('tHab');if(b.classList.contains('on'))return;b.classList.add('on');const d=today();if(!d.hab.includes(h.id))d.hab.push(h.id);award(10,h.t,b.querySelector('.box'));burst();
       document.querySelector('.tourtip').textContent='Есть! Так работает всё в игре: сделал — получил.';setTimeout(()=>{tourEnd();introStart()},1500)};return}
 }
-$('editMe').onclick=()=>editProfile(false);$('openShop').onclick=()=>openShop();$('lookBtn').onclick=()=>lookSheet();$('homeCfg').onclick=()=>homeSheet();$('homeCfg2').onclick=()=>homeSheet();$('introAgain').onclick=()=>introReset();
+$('editMe').onclick=()=>editProfile(false);$('openShop').onclick=()=>openShop();$('lookBtn').onclick=()=>lookSheet();$('homeCfg').onclick=()=>homeSheet();$('setBtn').onclick=()=>settingsSheet();$('setBtn2').onclick=()=>settingsSheet();
 function applyTheme(){const t=S.theme||'auto';if(t==='auto')delete document.documentElement.dataset.theme;else document.documentElement.dataset.theme=t;document.querySelectorAll('#themeSeg button').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.th===t)))}
 document.querySelectorAll('#themeSeg button').forEach(b=>b.onclick=()=>{S.theme=b.dataset.th;save();applyTheme();if(navigator.vibrate)navigator.vibrate(6)});
 function countTo(el,v){const from=parseInt(el.dataset.v||'0',10)||0;el.dataset.v=v;if(from===v||Math.abs(v-from)>5000||matchMedia('(prefers-reduced-motion:reduce)').matches){el.textContent=v.toLocaleString('ru-RU');return}const t0=performance.now(),d=650;(function f(t){const k=Math.min(1,(t-t0)/d),e=1-Math.pow(1-k,3);el.textContent=Math.round(from+(v-from)*e).toLocaleString('ru-RU');if(k<1)requestAnimationFrame(f)})(t0)}
-$('resetAll').onclick=()=>confirmSheet('Начать заново?','XP, значки, цели и вызовы удалятся с этого устройства. Вернуть их нельзя.','Удалить всё',async()=>{await DB.clear();S=fresh();seed();save();render();go('day');toast('Чистый лист');setTimeout(()=>editProfile(true),700)},true);
 
 /* ================= boss of the week ================= */
 const BOSSES=[['Лень','#8a5cf0','Лежит на диване и шепчет «завтра»'],['Прокрастинатор','#3b7ddd','Говорит «ещё пять минуточек»'],['Диванный Кракен','#14a383','Щупальца тянутся к пульту'],['Сонный Тролль','#f08a24','Выключает будильники'],['Телефонный Спрут','#e0457b','Крадёт часы лентами']];
@@ -2682,6 +2696,35 @@ function homeSheet(){const home=homeState();let order=homeOrder();const hide=Obj
   draw();$('hsX').onclick=closeSheet;$('hsReset').onclick=()=>{order=HOME_SECS.map(x=>x[0]);Object.keys(hide).forEach(k=>delete hide[k]);draw()};
   $('hsOk').onclick=()=>{home.order=order;home.hide=hide;save();closeSheet();renderIntro();toast('Главный экран настроен')}}
 
+/* ================= settings ================= */
+const APP_VER='1.0.25';
+const WHATSNEW=[['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
+const VIB=navigator.vibrate?navigator.vibrate.bind(navigator):null;
+try{navigator.vibrate=p=>S&&S.vibe===false?false:VIB?VIB(p):false}catch(e){}
+function applyPrefs(){const h=document.documentElement;h.classList.toggle('nomotion',S.motion===false);h.classList.toggle('compact',!!S.compact)}
+function resetGame(){confirmSheet('Начать заново?','XP, значки, цели и вызовы удалятся с этого устройства. Вернуть их нельзя.','Удалить всё',async()=>{await DB.clear();S=fresh();seed();save();render();go('day');toast('Чистый лист');setTimeout(()=>editProfile(true),700)},true)}
+function exportData(){try{const data=JSON.stringify({app:'prokachka',ver:APP_VER,t:Date.now(),state:S});const blob=new Blob([data],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='prokachka-'+dkey()+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);toast('Файл с прогрессом готов')}catch(e){toast('Не удалось сохранить файл')}}
+function importData(){const inp=document.createElement('input');inp.type='file';inp.accept='application/json,.json';inp.onchange=async()=>{const f=inp.files&&inp.files[0];if(!f)return;try{const j=JSON.parse(await f.text());const st=j.state||j;if(!st||typeof st.xp!=='number'||!Array.isArray(st.logs))throw 0;
+  confirmSheet('Заменить данные?','Прогресс на этом устройстве заменится данными из файла: '+esc(st.nick||'без имени')+', '+st.xp+' XP, '+st.logs.length+' записей.','Заменить',async()=>{S=Object.assign(fresh(),st);await DB.set('state',S);location.reload()},true)}catch(e){toast('Это не файл «Прокачки»')}};inp.click()}
+function settingsSheet(){const ic2=p=>'<span class="ic">'+ic(p)+'</span>';const sw=(k,on)=>'<button class="sw" data-k="'+k+'" aria-pressed="'+!!on+'"><i></i></button>';
+  const row=(id,icon,t,sub,right)=>'<'+(id?'button id="'+id+'"':'div')+' class="setrow"'+(id?'':'')+'>'+ic2(icon)+'<span class="t">'+t+(sub?'<small>'+sub+'</small>':'')+'</span>'+(right||'<span class="chev">›</span>')+'</'+(id?'button':'div')+'>';
+  const th=S.theme||'auto';
+  sheet('<h3>Настройки</h3>'+
+   '<div class="setg"><div class="setk">Игрок</div>'+row('st_prof','<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>','Профиль','имя, цвет, символ, цель дня')+row('st_look','<path d="M8 3l4 2 4-2 4 4-2 3v11H6V10L4 7z"/>','Внешность героя','одежда, кожа, волосы')+row('st_home','<rect x="3" y="4" width="18" height="6" rx="2"/><rect x="3" y="14" width="18" height="6" rx="2"/>','Главный экран','какие блоки показывать и в каком порядке')+'</div>'+
+   '<div class="setg"><div class="setk">Оформление</div><div class="setrow">'+ic2('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2"/>')+'<span class="t">Тема</span><div class="seg mini" id="themeSeg2"><button data-v="auto" aria-pressed="'+(th==='auto')+'">Система</button><button data-v="light" aria-pressed="'+(th==='light')+'">Светлая</button><button data-v="dark" aria-pressed="'+(th==='dark')+'">Тёмная</button></div></div>'+
+   row(null,'<path d="M5 12h14M12 5l7 7-7 7"/>','Анимации','появление блоков, конфетти, переходы',sw('motion',S.motion!==false))+row(null,'<path d="M4 4h16v16H4zM8 8h8v8H8z"/>','Мельче элементы','больше помещается на экран',sw('compact',!!S.compact))+'</div>'+
+   '<div class="setg"><div class="setk">Звук и отклик</div>'+row(null,'<path d="M11 5 6 9H2v6h4l5 4zM15 9a4 4 0 0 1 0 6"/>','Звуки','монетки, уровни, таймер',sw('sound',S.sound!==false))+row(null,'<rect x="7" y="2" width="10" height="20" rx="3"/><path d="M3 8v8M21 8v8"/>','Вибрация','где поддерживается',sw('vibe',S.vibe!==false))+'</div>'+
+   '<div class="setg"><div class="setk">Игра</div><div class="setrow">'+ic2('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>')+'<span class="t">Цель дня, XP</span></div><div class="chips" id="st_goal" style="margin:-2px 0 4px">'+[100,150,250,400].map(v=>'<button class="chip" data-v="'+v+'" aria-pressed="'+(v===(S.dailyGoal||150))+'">'+v+'</button>').join('')+'</div>'+
+   row(null,'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>','Открыть все разделы','рулетка, пари и капсулы без ожидания 5 уровня',sw('unlockAll',!!S.unlockAll))+row(null,'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 7M18 14a5 5 0 0 1 3.5 6"/>','Тренировочное сообщество','пять ботов, пока нет живых игроков'+(CM.local?'':' · сейчас онлайн-режим'),sw('bots',!S.botsOff))+row('st_intro','<path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/>','Знакомство заново','пройти экраны по шагам ещё раз')+'</div>'+
+   '<div class="setg"><div class="setk">Данные</div>'+row('st_exp','<path d="M12 3v12M7 10l5 5 5-5M4 21h16"/>','Сохранить прогресс в файл','чтобы перенести на другой телефон или в онлайн-версию')+row('st_imp','<path d="M12 21V9M7 14l5-5 5 5M4 3h16"/>','Загрузить из файла','заменит данные на этом устройстве')+row('st_reset','<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>','Начать заново','удалить всё на этом устройстве')+'</div>'+
+   '<div class="setg"><div class="setk">О приложении</div><div class="setrow" style="display:block"><div style="font-weight:800">Прокачка · версия '+APP_VER+'</div><div style="font-size:12.5px;color:var(--soft);margin-top:2px">Данные хранятся на этом устройстве. Обновления приходят сами при открытии с интернетом.</div><div class="wn">'+WHATSNEW.map(([v,t])=>'<div><b>'+v+'</b><span>'+t+'</span></div>').join('')+'</div></div></div>'+
+   '<div class="sbtns"><button class="btn" id="st_x">Закрыть</button></div>');
+  $('st_prof').onclick=()=>{closeSheet();setTimeout(()=>editProfile(false),400)};$('st_look').onclick=()=>{closeSheet();setTimeout(lookSheet,400)};$('st_home').onclick=()=>{closeSheet();setTimeout(homeSheet,400)};
+  $('st_intro').onclick=()=>introReset();$('st_exp').onclick=exportData;$('st_imp').onclick=importData;$('st_reset').onclick=()=>resetGame();$('st_x').onclick=closeSheet;
+  group($('themeSeg2'),v=>{S.theme=v;save();applyTheme()});group($('st_goal'),v=>{S.dailyGoal=+v;save();render();toast('Цель дня: '+v+' XP')});
+  document.querySelectorAll('#sheet .sw').forEach(b=>b.onclick=()=>{const k=b.dataset.k,on=b.getAttribute('aria-pressed')!=='true';b.setAttribute('aria-pressed',on);
+    if(k==='motion')S.motion=on;else if(k==='compact')S.compact=on;else if(k==='sound'){S.sound=on;if(on)snd('coin')}else if(k==='vibe'){S.vibe=on;if(on&&VIB)VIB(20)}else if(k==='unlockAll')S.unlockAll=on;else if(k==='bots'){S.botsOff=!on;save();toast('Перезапускаю…');setTimeout(()=>location.reload(),600);return}
+    save();applyPrefs();render()})}
 function render(){terrTick();renderOnb();renderMapBlock();renderRead();renderLock();renderHero();renderHH();renderHabits();renderQuests();renderWeek();renderBoss();renderGoals();renderBets();renderCaps();renderMood();renderNow();renderRecap();renderQuick();renderHints();renderRoul();renderHeat();renderCh();renderMe();renderTrust();renderPath();renderShield();renderTools();renderPiggy();renderDates();renderIntro()}
 const V=['day','ch','ppl','life','me'],DOING={day:'на главной',ch:'смотрит вызовы',ppl:'читает ленту',life:'в делах',me:'в профиле'};
 function go(v){if(v!=='day'&&typeof introOn==='function'&&S&&introOn('day')){toast('Сначала закончи знакомство с главным экраном');return}const changed=curView!==v;curView=v;V.forEach(k=>{const el=$('v-'+k);el.hidden=k!==v;if(k===v&&changed){el.classList.remove('vin');void el.offsetWidth;el.classList.add('vin')}});$('topHero').hidden=v!=='day';const ind=$('tabInd');if(ind)ind.style.transform='translateX('+V.indexOf(v)*100+'%)';if(changed&&navigator.vibrate)navigator.vibrate(6);document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===v));
@@ -2691,7 +2734,7 @@ function seed(){S.ch.push({id:uid(),task:'30 приседаний до обед�
 setInterval(()=>{renderHH();renderNow();const k=dkey();if(!S.days[k]){render()}},60000);
 
 (async()=>{await DB.open();S=await DB.get('state',null);if(!S){S=fresh();seed();DB.set('state',S)}
-  S=Object.assign(fresh(),S);S.c=Object.assign(fresh().c,S.c);S.seen=S.seen||{};S.shieldDays=S.shieldDays||[];S.pr=S.pr||{};if(!Object.keys(S.pr).length)Object.keys(TYPES).forEach(t=>{const v=prOf(t);if(v)S.pr[t]=v});S.onb=S.onb||{start:Date.now(),done:{}};readState();introState();homeState();lookState();terrState();applyTheme();today();applyShield();render();
+  S=Object.assign(fresh(),S);S.c=Object.assign(fresh().c,S.c);S.seen=S.seen||{};S.shieldDays=S.shieldDays||[];S.pr=S.pr||{};if(!Object.keys(S.pr).length)Object.keys(TYPES).forEach(t=>{const v=prOf(t);if(v)S.pr[t]=v});S.onb=S.onb||{start:Date.now(),done:{}};readState();introState();homeState();lookState();terrState();applyTheme();applyPrefs();today();applyShield();render();
   let v='day';try{v=localStorage.getItem('pt')||'day'}catch(e){}go(V.includes(v)&&!introOn('day')?v:'day');if(S.terr&&S.terr.unread&&!introOn('day'))setTimeout(()=>toast('<b>Карта</b>'+pl(S.terr.unread,'новое событие','новых события','новых событий')+' · '+esc(S.terr.log[0]?S.terr.log[0].t:'')),1400);
   if(!S.seen.tour)setTimeout(()=>editProfile(true),500);
   initCommunity()})();
