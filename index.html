@@ -437,6 +437,8 @@ h2{font-family:var(--head);font-weight:700;font-size:22px;line-height:1.2;margin
 .arena .art.flex{animation:flexpop .5s cubic-bezier(.2,1.6,.4,1)}
 .arena .fig.flex{animation:flexpop .5s cubic-bezier(.2,1.6,.4,1)}
 @keyframes idle{50%{transform:translateX(-50%) translateY(-3px) scaleY(1.012)}}
+.fig .eye{transform-box:fill-box;transform-origin:50% 50%;animation:blink 5.4s ease-in-out infinite}.fig .eye:nth-of-type(2){animation-delay:.02s}
+@keyframes blink{0%,91%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}97%{transform:scaleY(1)}}
 @keyframes flexpop{0%{transform:translateX(-50%) scale(.92)}100%{transform:translateX(-50%) scale(1)}}
 .arena svg.fig{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);height:300px;width:auto}
 .arena .karma{z-index:1;background:rgba(255,255,255,.1);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#fff;position:absolute;top:12px;left:12px;display:flex;align-items:center;gap:6px;border-radius:999px;padding:6px 12px;font-family:var(--head);font-weight:700;box-shadow:none}
@@ -1120,7 +1122,7 @@ body.introlock{overscroll-behavior:none}
     <div class="ranks" id="ranks"></div>
     <h2>Настройки</h2>
     <div class="sbtns" style="margin-top:0"><button class="btn" id="setBtn2" style="flex:1">Открыть настройки</button></div>
-    <p class="about">Прокачка · версия 1.0.26<br>Данные хранятся на этом устройстве</p>
+    <p class="about">Прокачка · версия 1.0.27<br>Данные хранятся на этом устройстве</p>
     </div>
   </section>
 </div>
@@ -1954,9 +1956,9 @@ function heroSVG(st,pose){const stage=bodyStage(st),form=st.reduce((a,s)=>a+s.f,
   if(o.cap&&!S.gear.head){g.push('<path d="M'+(cx-headr-3)+','+(hy-14)+' Q'+cx+','+(hy-48)+' '+(cx+headr+3)+','+(hy-14)+' Z" fill="'+o.cap+'"/><rect x="'+(cx-headr-6)+'" y="'+(hy-19)+'" width="'+(2*headr+12)+'" height="8" rx="4" fill="'+o.capband+'"/><rect x="'+(cx-headr-9)+'" y="'+(hy-13)+'" width="'+(2*headr+18)+'" height="6" rx="3" fill="'+o.cap+'" opacity=".95"/>')}
   const ey=hy+2;
   if(emotion==='tired'){g.push('<path d="M'+(cx-14)+','+(ey-6)+' L'+(cx-5)+','+(ey-3)+' M'+(cx+14)+','+(ey-6)+' L'+(cx+5)+','+(ey-3)+'" stroke="'+HAIR+'" stroke-width="3" stroke-linecap="round"/><path d="M'+(cx-13)+','+(ey+2)+' L'+(cx-5)+','+(ey+2)+' M'+(cx+5)+','+(ey+2)+' L'+(cx+13)+','+(ey+2)+'" stroke="'+INK+'" stroke-width="3" stroke-linecap="round"/><path d="M'+(cx-8)+','+(ey+18)+' Q'+cx+','+(ey+13)+' '+(cx+8)+','+(ey+18)+'" stroke="'+INK+'" stroke-width="2.5" fill="none" stroke-linecap="round"/>')}
-  else if(emotion==='happy'){g.push('<path d="M'+(cx-14)+','+(ey-8)+' L'+(cx-5)+','+(ey-6)+' M'+(cx+14)+','+(ey-8)+' L'+(cx+5)+','+(ey-6)+'" stroke="'+HAIR+'" stroke-width="3" stroke-linecap="round"/><circle cx="'+(cx-9)+'" cy="'+(ey+1)+'" r="3.2" fill="'+INK+'"/><circle cx="'+(cx+9)+'" cy="'+(ey+1)+'" r="3.2" fill="'+INK+'"/><path d="M'+(cx-9)+','+(ey+13)+' Q'+cx+','+(ey+22)+' '+(cx+9)+','+(ey+13)+'" stroke="'+INK+'" stroke-width="2.5" fill="none" stroke-linecap="round"/>')}
-  else if(emotion==='fierce'){g.push('<path d="M'+(cx-15)+','+(ey-9)+' L'+(cx-4)+','+(ey-4)+' M'+(cx+15)+','+(ey-9)+' L'+(cx+4)+','+(ey-4)+'" stroke="'+HAIR+'" stroke-width="3.5" stroke-linecap="round"/><circle cx="'+(cx-9)+'" cy="'+(ey+1)+'" r="3" fill="'+INK+'"/><circle cx="'+(cx+9)+'" cy="'+(ey+1)+'" r="3" fill="'+INK+'"/><path d="M'+(cx-8)+','+(ey+16)+' L'+(cx+8)+','+(ey+16)+'" stroke="'+INK+'" stroke-width="2.5" stroke-linecap="round"/>')}
-  else{g.push('<path d="M'+(cx-14)+','+(ey-7)+' L'+(cx-5)+','+(ey-6)+' M'+(cx+14)+','+(ey-7)+' L'+(cx+5)+','+(ey-6)+'" stroke="'+HAIR+'" stroke-width="3" stroke-linecap="round"/><circle cx="'+(cx-9)+'" cy="'+(ey+1)+'" r="3" fill="'+INK+'"/><circle cx="'+(cx+9)+'" cy="'+(ey+1)+'" r="3" fill="'+INK+'"/><path d="M'+(cx-7)+','+(ey+15)+' Q'+cx+','+(ey+18)+' '+(cx+7)+','+(ey+15)+'" stroke="'+INK+'" stroke-width="2.5" fill="none" stroke-linecap="round"/>')}
+  else if(emotion==='happy'){g.push('<path d="M'+(cx-14)+','+(ey-8)+' L'+(cx-5)+','+(ey-6)+' M'+(cx+14)+','+(ey-8)+' L'+(cx+5)+','+(ey-6)+'" stroke="'+HAIR+'" stroke-width="3" stroke-linecap="round"/><circle class="eye" cx="'+(cx-9)+'" cy="'+(ey+1)+'" r="3.2" fill="'+INK+'"/><circle class="eye" cx="'+(cx+9)+'" cy="'+(ey+1)+'" r="3.2" fill="'+INK+'"/><path d="M'+(cx-9)+','+(ey+13)+' Q'+cx+','+(ey+22)+' '+(cx+9)+','+(ey+13)+'" stroke="'+INK+'" stroke-width="2.5" fill="none" stroke-linecap="round"/>')}
+  else if(emotion==='fierce'){g.push('<path d="M'+(cx-15)+','+(ey-9)+' L'+(cx-4)+','+(ey-4)+' M'+(cx+15)+','+(ey-9)+' L'+(cx+4)+','+(ey-4)+'" stroke="'+HAIR+'" stroke-width="3.5" stroke-linecap="round"/><circle class="eye" cx="'+(cx-9)+'" cy="'+(ey+1)+'" r="3" fill="'+INK+'"/><circle class="eye" cx="'+(cx+9)+'" cy="'+(ey+1)+'" r="3" fill="'+INK+'"/><path d="M'+(cx-8)+','+(ey+16)+' L'+(cx+8)+','+(ey+16)+'" stroke="'+INK+'" stroke-width="2.5" stroke-linecap="round"/>')}
+  else{g.push('<path d="M'+(cx-14)+','+(ey-7)+' L'+(cx-5)+','+(ey-6)+' M'+(cx+14)+','+(ey-7)+' L'+(cx+5)+','+(ey-6)+'" stroke="'+HAIR+'" stroke-width="3" stroke-linecap="round"/><circle class="eye" cx="'+(cx-9)+'" cy="'+(ey+1)+'" r="3" fill="'+INK+'"/><circle class="eye" cx="'+(cx+9)+'" cy="'+(ey+1)+'" r="3" fill="'+INK+'"/><path d="M'+(cx-7)+','+(ey+15)+' Q'+cx+','+(ey+18)+' '+(cx+7)+','+(ey+15)+'" stroke="'+INK+'" stroke-width="2.5" fill="none" stroke-linecap="round"/>')}
   if(S.gear.head)g.push('<g transform="translate('+cx+','+(hy-24)+') scale(1.6)">'+gear('head')+'</g>');
   g.push('</g>');
   const sparks=pose==='flex'||pose==='victory'?'<g fill="#ffd54f"><circle cx="30" cy="70" r="5"/><circle cx="190" cy="56" r="4"/><circle cx="184" cy="150" r="4.5"/><circle cx="34" cy="160" r="3.5"/></g>':'';
@@ -2699,8 +2701,8 @@ function homeSheet(){const home=homeState();let order=homeOrder();const hide=Obj
   $('hsOk').onclick=()=>{home.order=order;home.hide=hide;save();closeSheet();renderIntro();toast('Главный экран настроен')}}
 
 /* ================= settings ================= */
-const APP_VER='1.0.26';
-const WHATSNEW=[['1.0.26','Боты: втрое больше фраз, учитывают время суток и день недели'],['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
+const APP_VER='1.0.27';
+const WHATSNEW=[['1.0.27','Герой моргает'],['1.0.26','Боты: втрое больше фраз, учитывают время суток и день недели'],['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
 const VIB=navigator.vibrate?navigator.vibrate.bind(navigator):null;
 try{navigator.vibrate=p=>S&&S.vibe===false?false:VIB?VIB(p):false}catch(e){}
 function applyPrefs(){const h=document.documentElement;h.classList.toggle('nomotion',S.motion===false);h.classList.toggle('compact',!!S.compact)}
