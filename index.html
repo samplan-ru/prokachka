@@ -885,6 +885,23 @@ h2{font-size:21px;margin:26px 0 10px}
 .cstats b{font-family:var(--head);font-size:17px;display:block;line-height:1.1}
 .cstats span{font-size:11px;color:var(--soft);font-weight:700;display:block;line-height:1.2;margin-top:2px}
 .hexwrap{background:radial-gradient(ellipse at 50% 30%,#2b3360 0%,#161a33 70%,#0e1124 100%);border-radius:22px;padding:10px;margin-top:10px;box-shadow:var(--shadow);border:1px solid var(--edge)}
+.nextst{margin-top:12px;background:var(--sunk);border-radius:14px;padding:10px 12px}
+.nextst .k{display:flex;justify-content:space-between;font-weight:800;font-size:13.5px}
+.nextst .pb{height:8px;border-radius:4px;background:color-mix(in srgb,var(--mint) 18%,transparent);margin-top:6px;overflow:hidden}
+.nextst .pb i{display:block;height:100%;background:linear-gradient(90deg,var(--mint),#5fe0be);border-radius:4px}
+.nextst small{display:block;font-size:12px;color:var(--soft);margin-top:5px}
+.pumpl{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.pumpc{border:1px solid var(--edge);background:var(--panel);border-radius:16px;padding:10px 9px;text-align:left;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:3px;border-top:4px solid var(--c)}
+.pumpc .n{font-size:12px;font-weight:800;color:var(--soft)}
+.pumpc .n b{color:var(--ink)}
+.pumpc .a{font-family:var(--head);font-weight:700;font-size:15px;line-height:1.15}
+.pumpc .g{font-size:11px;color:var(--c);font-weight:800}
+.radar .st .v em{font-style:normal;color:var(--mint);font-size:11px;margin-left:3px;font-weight:800}
+.badge .pv{display:block;font-size:11px;color:var(--soft);margin-top:3px}
+details.mstat{margin-top:16px}
+details.mstat summary{font-family:var(--head);font-weight:700;font-size:17px;cursor:pointer;padding:12px 14px;background:var(--panel);border-radius:16px;box-shadow:var(--shadow)}
+details.mstat[open] summary{border-radius:16px 16px 0 0}
+
 .fwho{margin-top:8px}
 .fpost .fmenu{border:0;background:none;color:var(--soft);font-size:18px;line-height:1;padding:0 2px;margin-left:4px;font-weight:800}
 .fpost .fhd small{margin-left:auto}
@@ -1129,8 +1146,10 @@ body.introlock{overscroll-behavior:none}
       <div class="arena" id="arena"></div>
       <div class="heroinfo"><button class="setgear" id="setBtn" aria-label="Настройки"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button><div class="nm" id="pName"></div><div class="rk" id="pRank"></div><div class="hsay" id="hSay"></div>
         <div class="acts4"><button id="editMe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16z"/></svg>Профиль</button><button id="openShop"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h16l-1 12H5zM9 8V6a3 3 0 0 1 6 0v2"/></svg>Магазин</button><button id="lookBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3l4 2 4-2 4 4-2 3v11H6V10L4 7z"/></svg>Внешность</button><button id="shareBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 3v12M7 8l5-5 5 5"/></svg>Поделиться</button></div>
+        <div class="nextst" id="nextSt"></div>
       </div>
     </div>
+    <div class="pump" id="pump"></div>
     </div>
     <div class="sec" data-sec="me-stats">
     <h2>Характеристики</h2>
@@ -1141,10 +1160,14 @@ body.introlock{overscroll-behavior:none}
     <div class="gear" id="gear"></div>
     </div>
     <div class="sec" data-sec="me-more">
+    <div class="hrow"><h2>Ближайшие значки</h2><button class="link" id="allBadges">Все значки</button></div>
+    <div class="badges near" id="badgesNear"></div>
+    <div class="badges" id="badges" hidden></div>
     <h2>Дуэли</h2>
     <div class="duelrec" id="duelrec"></div>
     <h2>Доверие</h2>
     <div class="trust" id="trust"></div>
+    <details class="more mstat"><summary>Статистика и путь</summary>
     <h2>XP за неделю</h2>
     <div class="bars" id="bars"></div>
     <h2>Активность</h2>
@@ -1157,13 +1180,12 @@ body.introlock{overscroll-behavior:none}
     <div class="shield" id="shield"></div>
     <h2>Всего сделано</h2>
     <div class="totals" id="totals"></div>
-    <h2>Значки</h2>
-    <div class="badges" id="badges"></div>
     <h2>Ранги</h2>
     <div class="ranks" id="ranks"></div>
+    </details>
     <h2>Настройки</h2>
     <div class="sbtns" style="margin-top:0"><button class="btn" id="setBtn2" style="flex:1">Открыть настройки</button></div>
-    <p class="about">Прокачка · версия 1.0.32<br>Данные хранятся на этом устройстве</p>
+    <p class="about">Прокачка · версия 1.0.33<br>Данные хранятся на этом устройстве</p>
     </div>
   </section>
 </div>
@@ -1781,13 +1803,21 @@ function renderOpen(box){if(!CM.on){box.innerHTML='<div class="empty"><b>Нуж�
   list.forEach(c=>box.appendChild(openCard(c)))}
 
 /* ================= profile ================= */
-function renderMe(){const L=level(),r=rankOf(L);renderChar();renderRadar();renderGear();renderDuelRec();
+function renderPump(){const st=statsNow(),p=(st[0].m+st[1].m+st[2].m)/3,TH=[8,22,45,70],stg=bodyStage(st);const ns=$('nextSt');
+  if(ns){if(stg<4){const lo=stg?TH[stg-1]:0,hi=TH[stg],pc=Math.max(0,Math.min(100,(p-lo)/(hi-lo)*100));ns.innerHTML='<div class="k">До стадии «'+BODY[stg+1]+'»<b>'+Math.round(pc)+'%</b></div><div class="pb"><i style="width:'+pc+'%"></i></div><small>Тело растёт от Силы, Ног и Выносливости. Сейчас '+Math.round(p)+' из '+hi+'.</small>'}else ns.innerHTML='<div class="k">Высшая стадия: «'+BODY[4]+'»</div>'}
+  const pm=$('pump');if(!pm)return;const by={str:['push','20 отжиманий','Сила'],legs:['squat','30 приседаний','Ноги'],endur:['km','2 км','Выносливость'],mind:['pages','15 страниц','Ум']};
+  const weak=st.filter(x=>by[x.k]).sort((a,b)=>a.m-b.m).slice(0,3);
+  pm.innerHTML='<div class="hrow" style="margin-top:14px"><h2>Прокачать сейчас</h2><span class="lede" style="margin:0;font-size:12.5px">слабые места</span></div><div class="pumpl">'+weak.map(x=>{const [type,act,nm]=by[x.k];return'<button class="pumpc" data-t="'+type+'" style="--c:'+x.c+'"><span class="n">'+nm+' <b>'+Math.round(x.m)+'</b></span><span class="a">'+act+'</span><span class="g">+'+(x.m<10?'1':'0,5')+' к '+nm.toLowerCase()+'</span></button>'}).join('')+'</div>';
+  pm.querySelectorAll('.pumpc').forEach(b=>b.onclick=()=>openLog(b.dataset.t))}
+function renderMe(){const L=level(),r=rankOf(L);renderChar();renderRadar();renderGear();renderDuelRec();renderPump();
   $('pName').textContent=S.nick||'Игрок';$('hSay').textContent='«'+heroSays()+'»';$('pRank').textContent='Лига «'+r[1]+'», уровень '+L+', '+S.xp.toLocaleString('ru-RU')+' XP';
   const ws=weekStart(),vals=[];for(let i=0;i<7;i++){const d=new Date(ws.getTime()+i*DAY);vals.push([d,Math.max(0,earnedOn(dkey(d)))])}const mx=Math.max(60,...vals.map(v=>v[1]));
   $('bars').innerHTML=vals.map(([d,x])=>'<div class="c'+(dkey(d)===dkey()?' today':'')+'"><b>'+(x||'')+'</b><i style="height:'+(x/mx*76)+'px"></i><span>'+d.toLocaleDateString('ru-RU',{weekday:'short'})+'</span></div>').join('');
   $('moods').innerHTML=vals.map(([d])=>{const m=S.mood[dkey(d)];return'<div>'+(m===undefined?'<span class="none"></span>':face(m))+d.toLocaleDateString('ru-RU',{weekday:'short'})+'</div>'}).join('');
   $('totals').innerHTML=Object.entries(TYPES).map(([k,t])=>'<div><b>'+fmt(total(k))+'</b><span>'+t.n.toLowerCase()+', '+t.u+'</span></div>').join('');
-  $('badges').innerHTML=ACH.map(a=>{const got=S.ach[a.id],[v,g]=a.v();return'<div class="badge'+(got?'':' lock')+'">'+MED(a.c[0],a.c[1],G[a.g])+'<div class="t">'+esc(a.t)+'</div><div class="s">'+esc(a.s)+'</div>'+(got?'':'<div class="pb"><i style="width:'+Math.min(100,v/g*100)+'%"></i></div>')+'</div>'}).join('');
+  const bHTML=a=>{const got=S.ach[a.id],[v,g]=a.v();return'<div class="badge'+(got?'':' lock')+'">'+MED(a.c[0],a.c[1],G[a.g])+'<div class="t">'+esc(a.t)+'</div><div class="s">'+esc(a.s)+'</div>'+(got?'':'<div class="pb"><i style="width:'+Math.min(100,v/g*100)+'%"></i></div><small class="pv">'+fmt(Math.min(v,g))+' / '+fmt(g)+'</small>')+'</div>'};
+  $('badges').innerHTML=ACH.map(bHTML).join('');const near=ACH.filter(a=>!S.ach[a.id]).map(a=>{const [v,g]=a.v();return [a,g?v/g:0]}).sort((a,b)=>b[1]-a[1]).slice(0,3).map(x=>x[0]);const gotN=ACH.filter(a=>S.ach[a.id]).length;
+  $('badgesNear').innerHTML=near.map(bHTML).join('')||'<div class="empty"><b>Все значки собраны</b></div>';const ab=$('allBadges');if(ab){ab.textContent=$('badges').hidden?'Все значки · '+gotN+' из '+ACH.length:'Свернуть';ab.onclick=()=>{$('badges').hidden=!$('badges').hidden;$('badgesNear').hidden=!$('badges').hidden;ab.textContent=$('badges').hidden?'Все значки · '+gotN+' из '+ACH.length:'Свернуть'}}
   const cur=rankOf(L);$('ranks').innerHTML=RANKS.map(rr=>'<div class="r'+(L>=rr[0]?' got':'')+(rr===cur?' now':'')+'"><span class="lv">'+rr[0]+'</span><span>'+rr[1]+'</span><span>'+(rr===cur?'сейчас':L>=rr[0]?'пройден':'с '+rr[0]+' уровня')+'</span></div>').join('')}
 function editProfile(first){let c=S.color,s=S.sym;
   const prev=()=>{$('pv').innerHTML=avaHTML(c,s,'xl')};
@@ -2068,12 +2098,12 @@ function renderChar(){const st=statsNow(),form=Math.round(st.reduce((a,s)=>a+s.f
   const el=$('arena');if(el){el.innerHTML='<span class="karma"><svg viewBox="0 0 24 24" fill="#e0457b"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg>'+S.karma.toLocaleString('ru-RU')+'</span><span class="form'+(form<15?' low':'')+'">Форма '+form+'%</span><div class="spot"></div><div class="floor"></div>'+(heroArt(st,renderChar.pose)||heroSVG(st,renderChar.pose))+'<span class="bodyst">'+BODY[stage]+(form<15?' · устал':'')+'</span>';
     el.onclick=()=>{if(renderChar.pose)return;renderChar.pose='flex';renderChar();if(navigator.vibrate)navigator.vibrate(20);setTimeout(()=>{renderChar.pose=null;renderChar()},1100)}}
   const hk=$('hKarma');if(hk)hk.textContent=S.karma.toLocaleString('ru-RU')}
-function renderRadar(){const st=statsNow(),n=st.length,cx=80,cy=80,R=52;const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+Math.cos(a)*R*v/100,cy+Math.sin(a)*R*v/100]};
+function renderRadar(){const st=statsNow(),n=st.length,cx=80,cy=80,R=52;const keep=S.logs;let prev=[];try{S.logs=keep.filter(l=>l.t<Date.now()-7*DAY);prev=statsNow()}finally{S.logs=keep}const pt=(i,v)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[cx+Math.cos(a)*R*v/100,cy+Math.sin(a)*R*v/100]};
   const poly=key=>st.map((s,i)=>pt(i,Math.max(4,s[key])).join(',')).join(' ');
   $('radar').innerHTML='<svg viewBox="0 0 160 160">'+[25,50,75,100].map(r=>'<polygon points="'+st.map((s,i)=>pt(i,r).join(',')).join(' ')+'" fill="none" stroke="var(--line)" stroke-width="1"/>').join('')+
    '<polygon points="'+poly('m')+'" fill="color-mix(in srgb,var(--sky) 25%,transparent)" stroke="var(--sky)" stroke-width="2"/><polygon points="'+poly('f')+'" fill="color-mix(in srgb,var(--mint) 30%,transparent)" stroke="var(--mint)" stroke-width="1.5" stroke-dasharray="3 2"/>'+
    st.map((s,i)=>{const[x,y]=pt(i,128);return'<text x="'+x+'" y="'+y+'" font-size="9" font-weight="700" text-anchor="middle" dominant-baseline="middle" fill="var(--soft)">'+s.sn+'</text>'}).join('')+'</svg>'+
-   '<div class="list">'+st.map(s=>'<div class="st"><span style="width:84px;color:'+s.c+'">'+s.n+'</span><span class="b"><i style="width:'+s.m+'%;background:'+s.c+'"></i></span><span class="v">'+Math.round(s.m)+'</span></div>').join('')+'<div style="font-size:11.5px;color:var(--soft);margin-top:4px">Сплошная — мышцы, пунктир — форма</div></div>'}
+   '<div class="list">'+st.map((s,i)=>{const d=Math.round(s.m)-Math.round((prev[i]||{}).m||0);return'<div class="st"><span style="width:84px;color:'+s.c+'">'+s.n+'</span><span class="b"><i style="width:'+s.m+'%;background:'+s.c+'"></i></span><span class="v">'+Math.round(s.m)+(d>0?'<em>+'+d+'</em>':'')+'</span></div>'}).join('')+'<div style="font-size:11.5px;color:var(--soft);margin-top:4px">Сплошная — мышцы, пунктир — форма</div></div>'}
 function renderGear(){const st=statsNow();$('gear').innerHTML=SLOTS_G.map(([k,n,p])=>{const it=GEAR.find(x=>x.id===S.gear[k]);return'<button class="gslot'+(it?' has':'')+'" data-s="'+k+'">'+(it?'<svg viewBox="-30 -30 60 60">'+it.g+'</svg><span>'+it.t+'</span>':ic(p)+'<span>'+n+'</span>')+'</button>'}).join('');
   $('gear').querySelectorAll('.gslot').forEach(b=>b.onclick=()=>openShop(b.dataset.s))}
 function openShop(slot){const st=statsNow();let cur=slot||'head';
@@ -2819,8 +2849,8 @@ function homeSheet(){const home=homeState();let order=homeOrder();const hide=Obj
   $('hsOk').onclick=()=>{home.order=order;home.hide=hide;save();closeSheet();renderIntro();toast('Главный экран настроен')}}
 
 /* ================= settings ================= */
-const APP_VER='1.0.32';
-const WHATSNEW=[['1.0.32','Лента: друзья, скрытие игроков, что публиковать о себе, выключение'],['1.0.31','Итог дуэли: экран победы или поражения, «верю на слово» и обжалование'],['1.0.30','Карта мира: города, страны, континенты, свой флаг'],['1.0.29','Вёрстка на iPhone: верх не под часами, панель вкладок ниже и компактнее'],['1.0.28','Без сети открывается сразу: свои шрифты, оболочка из кэша'],['1.0.27','Герой моргает'],['1.0.26','Боты: втрое больше фраз, учитывают время суток и день недели'],['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
+const APP_VER='1.0.33';
+const WHATSNEW=[['1.0.33','Профиль: до следующей стадии тела, «Прокачать сейчас», ближайшие значки'],['1.0.32','Лента: друзья, скрытие игроков, что публиковать о себе, выключение'],['1.0.31','Итог дуэли: экран победы или поражения, «верю на слово» и обжалование'],['1.0.30','Карта мира: города, страны, континенты, свой флаг'],['1.0.29','Вёрстка на iPhone: верх не под часами, панель вкладок ниже и компактнее'],['1.0.28','Без сети открывается сразу: свои шрифты, оболочка из кэша'],['1.0.27','Герой моргает'],['1.0.26','Боты: втрое больше фраз, учитывают время суток и день недели'],['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
 const VIB=navigator.vibrate?navigator.vibrate.bind(navigator):null;
 try{navigator.vibrate=p=>S&&S.vibe===false?false:VIB?VIB(p):false}catch(e){}
 function applyPrefs(){const h=document.documentElement;h.classList.toggle('nomotion',S.motion===false);h.classList.toggle('compact',!!S.compact)}
