@@ -885,6 +885,22 @@ h2{font-size:21px;margin:26px 0 10px}
 .cstats b{font-family:var(--head);font-size:17px;display:block;line-height:1.1}
 .cstats span{font-size:11px;color:var(--soft);font-weight:700;display:block;line-height:1.2;margin-top:2px}
 .hexwrap{background:radial-gradient(ellipse at 50% 30%,#2b3360 0%,#161a33 70%,#0e1124 100%);border-radius:22px;padding:10px;margin-top:10px;box-shadow:var(--shadow);border:1px solid var(--edge)}
+.dfin{text-align:center}
+.dfin .hero{height:150px;position:relative;margin:-6px auto 2px;width:150px}
+.dfin .hero svg{position:absolute;left:50%;top:0;transform:translateX(-50%);height:150px;width:auto}
+.dfin .ttl{font-family:var(--head);font-weight:800;font-size:34px;line-height:1.05;letter-spacing:-.02em}
+.dfin.win .ttl{color:var(--mint)}.dfin.lose .ttl{color:var(--berry)}.dfin.tie .ttl{color:var(--honey)}
+.dfin .sub{color:var(--soft);font-size:14px;margin-top:4px}
+.dfin .vs{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:14px 0 10px}
+.dfin .side{background:var(--sunk);border-radius:18px;padding:12px 8px;min-width:0}
+.dfin .side.me{outline:2px solid var(--mint)}
+.dfin .side .n{font-family:var(--head);font-weight:800;font-size:40px;line-height:1}
+.dfin .side .nk{font-weight:800;font-size:13px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dfin .vsx{font-size:12px;font-weight:800;color:var(--soft);max-width:80px}
+.dfin .how{font-size:13.5px;color:var(--soft);margin-top:10px;line-height:1.4}
+.dfin .sbtns{margin-top:14px;flex-wrap:wrap}
+.wordcase{margin:10px 0 0;padding:12px;border-radius:14px;background:var(--honey-soft);font-size:13.5px;font-weight:700}
+
 /* world map */
 .wmapwrap{position:relative;background:radial-gradient(ellipse at 50% 30%,#232a52 0%,#161a33 70%,#0e1124 100%);border-radius:22px;padding:0;margin-top:10px;box-shadow:var(--shadow);border:1px solid var(--edge);overflow:hidden}
 .wmap{width:100%;height:auto;aspect-ratio:1.7;display:block;touch-action:none;cursor:grab;background:#141833}
@@ -1136,7 +1152,7 @@ body.introlock{overscroll-behavior:none}
     <div class="ranks" id="ranks"></div>
     <h2>Настройки</h2>
     <div class="sbtns" style="margin-top:0"><button class="btn" id="setBtn2" style="flex:1">Открыть настройки</button></div>
-    <p class="about">Прокачка · версия 1.0.30<br>Данные хранятся на этом устройстве</p>
+    <p class="about">Прокачка · версия 1.0.31<br>Данные хранятся на этом устройстве</p>
     </div>
   </section>
 </div>
@@ -1306,7 +1322,7 @@ const isHH=()=>new Date().getHours()===hhHour();
 /* ================= rewards ================= */
 const queue=[];let showing=false;
 let AC=null;function snd(kind){if(!S||!S.sound)return;try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime,play=(f,st,d,type,g)=>{const o=AC.createOscillator(),v=AC.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t+st);v.gain.setValueAtTime(0,t+st);v.gain.linearRampToValueAtTime(g||.12,t+st+.01);v.gain.exponentialRampToValueAtTime(.001,t+st+d);o.connect(v).connect(AC.destination);o.start(t+st);o.stop(t+st+d+.05)};
-  if(kind==='tick')play(880,0,.06,'square',.05);else if(kind==='coin'){play(988,0,.09,'square',.07);play(1319,.09,.18,'square',.07)}else if(kind==='up'){[523,659,784,1047].forEach((f,i)=>play(f,i*.1,.28,'triangle',.11))}else if(kind==='karma'){play(660,0,.12,'sine',.1);play(880,.12,.22,'sine',.1)}else if(kind==='fail'){play(300,0,.2,'sawtooth',.05);play(200,.15,.3,'sawtooth',.05)}else if(kind==='spin')play(440,0,.04,'square',.03)}catch(e){}}
+  if(kind==='tick')play(880,0,.06,'square',.05);else if(kind==='coin'){play(988,0,.09,'square',.07);play(1319,.09,.18,'square',.07)}else if(kind==='up'){[523,659,784,1047].forEach((f,i)=>play(f,i*.1,.28,'triangle',.11))}else if(kind==='karma'){play(660,0,.12,'sine',.1);play(880,.12,.22,'sine',.1)}else if(kind==='fail'){play(300,0,.2,'sawtooth',.05);play(200,.15,.3,'sawtooth',.05)}else if(kind==='lose'){play(392,0,.22,'triangle',.1);play(330,.2,.26,'triangle',.1);play(262,.42,.55,'triangle',.11)}else if(kind==='spin')play(440,0,.04,'square',.03)}catch(e){}}
 function award(x,why,el){x=Math.round(x);if(x<=0)return;const now=Date.now();S.combo=S.combo||{n:0,t:0};S.combo.n=now-S.combo.t<600000?S.combo.n+1:1;S.combo.t=now;const mult=1+Math.min(.5,(S.combo.n-1)*.1);if(mult>1)x=Math.round(x*mult);const tb=S.world?terrBonus():0;if(tb)x=Math.round(x*(1+tb/100));
   const before=level();S.xp+=x;S.earn.push({t:now,x});
   toast('<b>+'+x+' XP</b>'+esc(why)+(mult>1?' <span style="opacity:.75">· комбо ×'+mult.toFixed(1).replace('.',',')+'</span>':''));fly('+'+x,el);snd('coin');const after=level();
@@ -1608,7 +1624,7 @@ const BOTS={list:BOT_LIST,
       if(c.by===b.id&&!c.duel&&tk.me&&tk.me.st==='pending'){const h=botH(id,b.id+'w'),delay=30*6e4+h*5*H;if(t>=(tk.me.dt||tk.me.t||c.t)+delay){if(h<.9){tk.me.st='done';tk.me.ok=1;tk.me.okt=t}else{tk.me.st='in';tk.me.rej=1}LDB.notify('challenges')}}});
     // jury votes on cases that are not his own
     Object.entries(d.jury).forEach(([id,j])=>{if(j.by===b.id||j.verdict!==null&&j.verdict!==undefined)return;const votes=j.votes=j.votes||{};if(votes[b.id]!==undefined)return;const h=botH(id,b.id+'j'),delay=10*6e4+h*5*H;if(t<j.t+delay)return;
-      const limit=j.by==='me'?3:2;if(Object.keys(votes).filter(k=>k!=='me').length>=limit)return;votes[b.id]=h<1-b.strict?1:0;const vals=Object.values(votes);if(vals.length>=3){const yes=vals.filter(x=>x===1).length;j.verdict=yes*2>vals.length?1:0}LDB.notify('jury')})},
+      const limit=(j.by==='me'||(j.appeal&&j.appeal.by==='me'))?3:2;if(Object.keys(votes).filter(k=>k!=='me').length>=limit)return;votes[b.id]=j.word?(h<((j.trust||50)/100)*(1-b.strict*0.5)?1:0):(h<1-b.strict?1:0);const vals=Object.values(votes);if(vals.length>=3){const yes=vals.filter(x=>x===1).length;j.verdict=yes*2>vals.length?1:0}LDB.notify('jury')})},
   amount(b,type){const p=this.per(b),L=this.lvl(p);const base={push:12+L*6,squat:20+L*8,pull:2+L*1.5,km:2+L*0.8}[type]||20;return Math.round(base*(0.8+Math.random()*0.5)*(type==='km'?10:1))/(type==='km'?10:1)},
   slot(t){const h=new Date(t).getHours();this.list.forEach(b=>{const act=h>=b.hours[0]&&h<b.hours[1];const n=(b.hours[1]-b.hours[0])*4;if(act){this.gain(b,b.rate/n*(0.5+Math.random()),t);if(Math.random()<b.post/n)this.post(b,t);if(Math.random()<0.1/n)this.openChallenge(b,t);if(Math.random()<0.06/n)this.directChallenge(b,t);if(Math.random()<0.04/n)this.duel24(b,t);if(Math.random()<0.07/n)this.juryCase(b,t);if(Math.random()<0.05/n){const p=this.per(b);p.streak++;this.post(b,t,'ev',['Закрыл цель дня','Закрыл все ритуалы дня','Новый рекорд дня: отжимания '+(20+Math.floor(Math.random()*60))][Math.floor(Math.random()*3)])}}
       this.react(b,t)})},
@@ -1710,7 +1726,9 @@ function openCard(c){if(c.duel)return duelCard(c);const tk=c.takers||{},me=tk[CM
 function duelCard(c){const tk=c.takers||{},me=tk[CM.uid],mineC=c.by===CM.uid,expired=c.due<Date.now(),t=TYPES[c.duel]||TYPES.push,d=document.createElement('div');
   const ids=Object.keys(tk),oppId=ids.find(k=>k!==CM.uid)||(mineC?c.to:c.by),opp=tk[oppId]||{nick:mineC?c.toNick:c.nick},both=ids.length===2&&ids.every(k=>tk[k].amt!==undefined),done=both||expired;
   let res='';if(done&&me){const mine=me.amt||0,theirs=(tk[oppId]||{}).amt||0,win=mine>theirs,tie=mine===theirs;res=tie?'Ничья':win?'Ты победил':'Победил '+esc(opp.nick||'соперник');
-    const key='d24:'+c.id;if(!S.seen[key]){S.seen[key]=1;if(!tie){eloUpdate(win,(tk[oppId]||{}).elo||1000);if(win){karma(40,'дуэль на сутки выиграна');award(60,'Дуэль на сутки: победа '+fmt(mine)+':'+fmt(theirs))}else award(20,'Дуэль на сутки: '+fmt(mine)+':'+fmt(theirs))}else award(30,'Дуэль на сутки: ничья');S.c.duels++;if(win&&!tie)S.c.duelWins++;save()}}
+    const key='d24:'+c.id;if(!S.seen[key]){S.seen[key]=1;const eloBefore=S.elo;let xp=0,km=0;if(!tie){eloUpdate(win,(tk[oppId]||{}).elo||1000);if(win){km=40;karma(40,'дуэль на сутки выиграна');xp=60;award(60,'Дуэль на сутки: победа '+fmt(mine)+':'+fmt(theirs))}else{xp=20;award(20,'Дуэль на сутки: '+fmt(mine)+':'+fmt(theirs))}}else{xp=30;award(30,'Дуэль на сутки: ничья')}S.c.duels++;if(win&&!tie)S.c.duelWins++;save();
+      const op=tk[oppId]||{},pm=op.pm||(op.ai?'photo':'word'),oppPl=(CM.players||[]).find(p=>p.id===oppId||p.uid===oppId)||{};
+      setTimeout(()=>duelFinale({kind:'day',ex:c.duel,exn:t.n,my:mine,their:theirs,oppNick:opp.nick,oppColor:opp.color||c.color,oppSym:opp.sym||c.sym,oppId,oppTrust:oppPl.trust,oppMode:pm==='video'||op.ai?(op.ai?'photo':'video'):pm,duelId:c.id,xp,karma:km,eloBefore,eloAfter:S.elo,canAppeal:!!oppId&&pm==='word',onRematch:()=>{const b=$('newCh');if(b)b.click()}}),500)}}
   d.className='ch'+(done?'':' in');d.innerHTML='<div class="hd">'+avaHTML(c.color,c.sym,'s')+'<span class="who"><b></b> вызвал на дуэль <b>'+esc(mineC?(c.toNick||''):'тебя')+'</b><br>'+ago(c.t)+'</span><span class="tagx">дуэль</span></div><div class="bd"><div class="task">'+esc(t.n)+' за сутки</div><div class="meta"><span class="chip-s h">40 кармы</span>'+(done?'<span class="chip-s m">'+res+'</span>':'<span class="chip-s b">'+(expired?'время вышло':'до '+new Date(c.due).toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit'}))+'</span>')+'</div>'+
    '<div class="duel" style="margin-top:12px"><div class="vs" style="margin:0"><div class="side"><div class="n">'+(me&&me.amt!==undefined?fmt(me.amt):'—')+'</div><div class="nk">'+esc(S.nick||'Ты')+'</div></div><span class="vsx">VS</span><div class="side"><div class="n">'+((tk[oppId]||{}).amt!==undefined?(done?fmt(tk[oppId].amt):'сдал'):'—')+'</div><div class="nk">'+esc(opp.nick||'Соперник')+'</div></div></div></div><div class="acts"></div></div>';
   d.querySelector('.who b').textContent=mineC?'Ты':(c.nick||'Игрок');
@@ -1721,12 +1739,12 @@ function duelCard(c){const tk=c.takers||{},me=tk[CM.uid],mineC=c.by===CM.uid,exp
   return d}
 async function juryPost(c,photo){try{const im=await new Promise((r,j)=>{const i=new Image();i.onload=()=>r(i);i.onerror=j;i.src=photo});const sc=Math.min(1,420/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=im.width*sc|0;cv.height=im.height*sc|0;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
   await cmWrite(CM.db.collection('jury').doc(uid()),{by:CM.uid,nick:S.nick||'Игрок',color:S.color,sym:S.sym,task:c.task,ch:c.id,photo:cv.toDataURL('image/jpeg',.7),t:Date.now(),votes:{},verdict:null})}catch(e){}}
-function renderJury(){const box=$('jury');if(!box)return;const mine=CM.jury.filter(j=>j.by===CM.uid);
+function renderJury(){const box=$('jury');if(!box)return;appealResolve();const mine=CM.jury.filter(j=>j.by===CM.uid);
   mine.forEach(j=>{const key='jv:'+j.id;if(j.verdict!==null&&j.verdict!==undefined&&!S.seen[key]){S.seen[key]=1;if(j.verdict){karma(15,'присяжные подтвердили');trustAdd(5,'присяжные подтвердили')}else trustAdd(-10,'присяжные не поверили')}});
-  const todo=CM.jury.filter(j=>j.by!==CM.uid&&(j.verdict===null||j.verdict===undefined)&&!(j.votes||{})[CM.uid]).slice(0,3);
+  const todo=CM.jury.filter(j=>j.by!==CM.uid&&!(j.appeal&&j.appeal.by===CM.uid)&&(j.verdict===null||j.verdict===undefined)&&!(j.votes||{})[CM.uid]).slice(0,3);
   if(!todo.length){box.innerHTML='<div class="empty"><b>Дел на рассмотрении нет</b>Когда кто-то сдаст вызов с фото, оно попадёт сюда. За каждый вердикт +3 кармы.</div>';return}
-  box.innerHTML='';todo.forEach(j=>{const d=document.createElement('div');d.className='ch';d.innerHTML='<div class="hd">'+avaHTML(j.color,j.sym,'s')+'<span class="who"><b></b> сдал вызов с фото<br>'+ago(j.t)+'</span></div><img class="proof" alt="Фото-подтверждение"><div class="bd"><div class="task"></div><div class="meta"><span class="chip-s">'+Object.keys(j.votes||{}).length+' из 3 голосов</span></div><div class="acts"><button class="btn win">Похоже на правду</button><button class="btn" style="color:var(--berry)">Не похоже</button></div></div>';
-    d.querySelector('.who b').textContent=j.nick||'Игрок';d.querySelector('img').src=j.photo;d.querySelector('.task').textContent=j.task;
+  box.innerHTML='';todo.forEach(j=>{const d=document.createElement('div');d.className='ch';d.innerHTML='<div class="hd">'+avaHTML(j.color,j.sym,'s')+'<span class="who"><b></b> '+(j.word?'сдал дуэль на слово — соперник обжаловал':'сдал вызов с фото')+'<br>'+ago(j.t)+'</span></div>'+(j.word?'<div class="wordcase">На слово · доверие '+Math.round(j.trust||50)+' · похоже ли это на правду для этого игрока?</div>':'<img class="proof" alt="Фото-подтверждение">')+'<div class="bd"><div class="task"></div><div class="meta"><span class="chip-s">'+Object.keys(j.votes||{}).length+' из 3 голосов</span></div><div class="acts"><button class="btn win">Похоже на правду</button><button class="btn" style="color:var(--berry)">Не похоже</button></div></div>';
+    d.querySelector('.who b').textContent=j.nick||'Игрок';const im=d.querySelector('img');if(im)im.src=j.photo;d.querySelector('.task').textContent=j.task;
     const vote=async v=>{if(!CM.canWrite)return;const votes=Object.assign({},j.votes||{},{[CM.uid]:v});const patch={votes:{[CM.uid]:v}};const vals=Object.values(votes);if(vals.length>=3){const yes=vals.filter(x=>x===1).length;patch.verdict=yes*2>vals.length?1:0}
       if(await cmWrite(CM.db.doc('jury/'+j.id),patch,true)){karma(3,'доброе дело: присяжный');S.c.witness=(S.c.witness||0)+1;toast('Вердикт учтён')}};
     const bs=d.querySelectorAll('.acts .btn');bs[0].onclick=()=>vote(1);bs[1].onclick=()=>vote(0);box.appendChild(d)})}
@@ -1871,10 +1889,34 @@ async function runDuel(){const du=DU;let R;try{R=await CM.room.join('duel-'+du.i
     if(now<du.startAt){el.textContent=Math.ceil((du.startAt-now)/1000);return}
     const left=30-(now-du.startAt)/1000;if(left>0){if(!du.live){du.live=true;$('dTap').disabled=false}el.textContent=Math.ceil(left);return}
     clearInterval(tick);du.live=false;$('dTap').disabled=true;el.textContent='Стоп';
-    setTimeout(()=>{unP();R.leave().catch(()=>{});DU=null;const win=du.my>du.their,tie=du.my===du.their;closeSheet();S.c.duels++;if(win)S.c.duelWins++;eloUpdate(win,1000);
-      award(tie?40:win?60:20,(tie?'Дуэль, ничья ':win?'Дуэль выиграна ':'Дуэль проиграна ')+du.my+':'+du.their);
-      post('ev',(win?'Выиграл дуэль у ':tie?'Сыграл вничью с ':'Проиграл дуэль ')+du.oppNick+', '+exn.toLowerCase()+' '+du.my+':'+du.their)},1500)},250)}
+    setTimeout(()=>{unP();R.leave().catch(()=>{});DU=null;const win=du.my>du.their,tie=du.my===du.their;closeSheet();S.c.duels++;if(win)S.c.duelWins++;const eloBefore=S.elo;if(!tie)eloUpdate(win,1000);const xp=tie?40:win?60:20;
+      award(xp,(tie?'Дуэль, ничья ':win?'Дуэль выиграна ':'Дуэль проиграна ')+du.my+':'+du.their);if(win)karma(20,'победа в дуэли вживую');
+      post('ev',(win?'Выиграл дуэль у ':tie?'Сыграл вничью с ':'Проиграл дуэль ')+du.oppNick+', '+exn.toLowerCase()+' '+du.my+':'+du.their);
+      setTimeout(()=>duelFinale({kind:'live',my:du.my,their:du.their,oppNick:du.oppNick,exn,xp,karma:win?20:0,eloBefore,eloAfter:S.elo,oppMode:'live',canAppeal:false,onRematch:()=>{const b=$('duelBtn');if(b)b.click()}}),400)},1500)},250)}
 
+
+/* ================= duel finale (итог дуэли) ================= */
+function duelFinale(o){const win=o.my>o.their,tie=o.my===o.their;const st=statsNow();const hero=heroSVG(st,win?'victory':tie?'idle':'tired');
+  if(win){snd('up');burst()}else if(tie)snd('karma');else snd('lose');if(navigator.vibrate)navigator.vibrate(win?[30,40,30]:tie?20:[80]);
+  const title=win?'Победа':tie?'Ничья':'Поражение',sub=win?'Ты сильнее на этот раз.':tie?'Силы равны. В следующий раз решит характер.':'Проиграть не стыдно. Стыдно не выйти снова.';
+  const chips=[];if(o.xp)chips.push('+'+o.xp+' XP');if(o.karma)chips.push('+'+o.karma+' кармы');if(o.eloAfter!==undefined&&o.eloBefore!==undefined){const d=o.eloAfter-o.eloBefore;chips.push('рейтинг '+o.eloAfter+' ('+(d>=0?'+':'')+d+')')}
+  const word=o.oppMode==='word'||!o.oppMode;const canAppeal=o.canAppeal&&!win&&!tie&&word;
+  sheet('<div class="dfin '+(win?'win':tie?'tie':'lose')+'"><div class="hero">'+hero+'</div><div class="ttl">'+title+'</div><div class="sub">'+sub+'</div>'+
+   '<div class="vs"><div class="side me"><div class="n">'+fmt(o.my)+'</div><div class="nk">'+esc(S.nick||'Ты')+'</div></div><span class="vsx">'+esc(o.exn||'')+'</span><div class="side"><div class="n">'+fmt(o.their)+'</div><div class="nk">'+esc(o.oppNick||'Соперник')+'</div></div></div>'+
+   (chips.length?'<div class="chips" style="justify-content:center">'+chips.map(c=>'<span class="chip-s m">'+c+'</span>').join('')+'</div>':'')+
+   (o.kind==='day'?'<div class="how">'+(word?'Соперник сдал результат <b>на слово</b>'+(o.oppTrust!==undefined?' · доверие '+Math.round(o.oppTrust):'')+(canAppeal?'. Сомневаешься — присяжные проверят.':''):'Результат соперника подтверждён: '+(o.oppMode==='video'?'камера':o.oppMode==='witness'?'свидетель':'фото и ИИ'))+'</div>':'')+
+   '<div class="sbtns">'+(canAppeal?'<button class="btn" id="dfTrust">Верю на слово</button><button class="btn" style="color:var(--berry)" id="dfAppeal">Обжаловать</button>':'')+(!win&&!tie&&o.onRematch?'<button class="btn" id="dfRe">Реванш</button>':'')+'<button class="btn '+(win?'win':'go')+'" id="dfOk">'+(canAppeal?'Дальше':'Дальше')+'</button></div></div>');
+  $('dfOk').onclick=closeSheet;const re=$('dfRe');if(re)re.onclick=()=>{closeSheet();setTimeout(o.onRematch,350)};
+  const tr=$('dfTrust');if(tr)tr.onclick=()=>{S.c.trusted=(S.c.trusted||0)+1;karma(5,'поверил на слово');closeSheet()};
+  const ap=$('dfAppeal');if(ap)ap.onclick=()=>confirmSheet('Обжаловать результат?','Присяжные посмотрят на заявленный результат и историю соперника. Если они поверят сопернику, твоё доверие упадёт на 5 — за напрасное обвинение. Если нет — победа засчитается тебе, а соперник потеряет доверие.','Обжаловать',()=>duelAppeal(o),true)}
+async function duelAppeal(o){if(!CM.canWrite){toast('Нужна связь');return}const id=uid();const t=TYPES[o.ex]||TYPES.push;
+  const ok=await cmWrite(CM.db.doc('jury/'+id),{by:o.oppId,nick:o.oppNick,color:o.oppColor||'#8a90b5',sym:o.oppSym||'star',task:'Дуэль: '+t.n.toLowerCase()+' — заявлено '+fmt(o.their)+' '+t.u+' (на слово)',ch:o.duelId||'',photo:'',word:1,trust:o.oppTrust||50,appeal:{by:CM.uid,my:o.my,their:o.their,ex:o.ex},t:Date.now(),votes:{},verdict:null},false);
+  if(ok){S.c.appeals=(S.c.appeals||0)+1;save();toast('Обжалование подано: присяжные решат за сутки');if(typeof BOTS!=='undefined'&&CM.local)setTimeout(()=>BOTS.tick(),300)}}
+function appealResolve(){CM.jury.forEach(j=>{if(!j.appeal||j.appeal.by!==CM.uid||j.verdict===null||j.verdict===undefined)return;const key='ap:'+j.id;if(S.seen[key])return;S.seen[key]=1;
+  if(j.verdict===0){S.c.appealsWon=(S.c.appealsWon||0)+1;eloUpdate(true,1000);karma(40,'обжалование принято: победа твоя');award(60,'Дуэль пересмотрена: победа');post('ev','Присяжные не поверили '+(j.nick||'сопернику')+' — дуэль пересмотрена');
+    if(CM.local&&typeof LDB!=='undefined'){const d=LDB.data();if(d.players[j.by]){d.players[j.by].trust=Math.max(0,(d.players[j.by].trust||50)-10);d.players[j.by].liar=(d.players[j.by].liar||0)+1}const bb=typeof BOTS!=='undefined'&&BOTS.by(j.by);if(bb){const p=BOTS.per(bb);p.trust=Math.max(0,p.trust-10);p.liar=(p.liar||0)+1}LDB.notify('players')}
+    setTimeout(()=>toast('<b>Обжалование принято.</b> Победа засчитана тебе'),800)}
+  else{trustAdd(-5,'напрасное обвинение');setTimeout(()=>toast('Присяжные поверили сопернику. Доверие −5'),800)}save()})}
 /* ================= karma (only for verified & social) ================= */
 function karma(k,why){k=Math.round(k);if(!k)return;if(k>0)setTimeout(()=>snd('karma'),2200);S.karma=Math.max(0,S.karma+k);S.kl.push({t:Date.now(),k,w:why});if(S.kl.length>500)S.kl.shift();
   const e=$('toast');setTimeout(()=>{e.innerHTML='<b style="color:#fff">'+(k>0?'+':'')+k+' кармы</b>'+esc(why);e.classList.add('on','ktoast');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on','ktoast'),2300)},k>0?2200:0);save();renderHero();if(!$('v-me').hidden)renderMe()}
@@ -2015,7 +2057,7 @@ function openShop(slot){const st=statsNow();let cur=slot||'head';
       if(!S.owned.includes(it.id)){if(S.karma<it.p||!meets(it,st))return;S.karma-=it.p;S.owned.push(it.id);S.kl.push({t:Date.now(),k:-it.p,w:it.t});toast('Куплено: '+it.t)}
       S.gear[cur]=it.id;save();list();renderChar();renderGear();post('ev','Надел «'+it.t+'»')})};
   draw()}
-function renderDuelRec(){const total=S.dw+S.dl,wr=total?Math.round(S.dw/total*100):0;$('duelrec').innerHTML='<div><b>'+S.elo+'</b><span>рейтинг</span></div><div><b>'+S.dw+' / '+S.dl+'</b><span>победы / поражения</span></div><div><b>'+wr+'%</b><span>винрейт'+(gearBonus()?', +'+gearBonus()+'% от шмота':'')+'</span></div>'}
+function renderDuelRec(){const total=S.dw+S.dl,wr=total?Math.round(S.dw/total*100):0;$('duelrec').innerHTML='<div><b>'+S.elo+'</b><span>рейтинг</span></div><div><b>'+S.dw+' / '+S.dl+'</b><span>победы / поражения</span></div><div><b>'+wr+'%</b><span>винрейт'+(gearBonus()?', +'+gearBonus()+'% от шмота':'')+'</span></div>'+(S.c.appeals?'<div><b>'+(S.c.appealsWon||0)+' / '+S.c.appeals+'</b><span>споров выиграно</span></div>':'')}
 function eloUpdate(win,oppElo){const k=32,e=1/(1+Math.pow(10,(oppElo-S.elo)/400));S.elo=Math.round(S.elo+k*((win?1:0)-e));if(win)S.dw++;else S.dl++}
 
 /* ================= trust ================= */
@@ -2749,8 +2791,8 @@ function homeSheet(){const home=homeState();let order=homeOrder();const hide=Obj
   $('hsOk').onclick=()=>{home.order=order;home.hide=hide;save();closeSheet();renderIntro();toast('Главный экран настроен')}}
 
 /* ================= settings ================= */
-const APP_VER='1.0.30';
-const WHATSNEW=[['1.0.30','Карта мира: города, страны, континенты, свой флаг'],['1.0.29','Вёрстка на iPhone: верх не под часами, панель вкладок ниже и компактнее'],['1.0.28','Без сети открывается сразу: свои шрифты, оболочка из кэша'],['1.0.27','Герой моргает'],['1.0.26','Боты: втрое больше фраз, учитывают время суток и день недели'],['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
+const APP_VER='1.0.31';
+const WHATSNEW=[['1.0.31','Итог дуэли: экран победы или поражения, «верю на слово» и обжалование'],['1.0.30','Карта мира: города, страны, континенты, свой флаг'],['1.0.29','Вёрстка на iPhone: верх не под часами, панель вкладок ниже и компактнее'],['1.0.28','Без сети открывается сразу: свои шрифты, оболочка из кэша'],['1.0.27','Герой моргает'],['1.0.26','Боты: втрое больше фраз, учитывают время суток и день недели'],['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
 const VIB=navigator.vibrate?navigator.vibrate.bind(navigator):null;
 try{navigator.vibrate=p=>S&&S.vibe===false?false:VIB?VIB(p):false}catch(e){}
 function applyPrefs(){const h=document.documentElement;h.classList.toggle('nomotion',S.motion===false);h.classList.toggle('compact',!!S.compact)}
