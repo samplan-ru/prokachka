@@ -885,6 +885,17 @@ h2{font-size:21px;margin:26px 0 10px}
 .cstats b{font-family:var(--head);font-size:17px;display:block;line-height:1.1}
 .cstats span{font-size:11px;color:var(--soft);font-weight:700;display:block;line-height:1.2;margin-top:2px}
 .hexwrap{background:radial-gradient(ellipse at 50% 30%,#2b3360 0%,#161a33 70%,#0e1124 100%);border-radius:22px;padding:10px;margin-top:10px;box-shadow:var(--shadow);border:1px solid var(--edge)}
+.fwho{margin-top:8px}
+.fpost .fmenu{border:0;background:none;color:var(--soft);font-size:18px;line-height:1;padding:0 2px;margin-left:4px;font-weight:800}
+.fpost .fhd small{margin-left:auto}
+.fpost{padding:13px 14px 11px}
+.fpost .ftx{margin-top:3px}
+.fpost.ev{padding:9px 14px}
+.fpost.ev .ftx{font-size:13.5px;margin-top:1px}
+.fpost.ev .fft{margin-top:4px}
+.fpost.ev .cheer{padding:3px 9px;font-size:12px}
+.flist .fpost.ev+.fpost.ev{border-top:1px dashed var(--line)}
+
 .dfin{text-align:center}
 .dfin .hero{height:150px;position:relative;margin:-6px auto 2px;width:150px}
 .dfin .hero svg{position:absolute;left:50%;top:0;transform:translateX(-50%);height:150px;width:auto}
@@ -1152,7 +1163,7 @@ body.introlock{overscroll-behavior:none}
     <div class="ranks" id="ranks"></div>
     <h2>Настройки</h2>
     <div class="sbtns" style="margin-top:0"><button class="btn" id="setBtn2" style="flex:1">Открыть настройки</button></div>
-    <p class="about">Прокачка · версия 1.0.31<br>Данные хранятся на этом устройстве</p>
+    <p class="about">Прокачка · версия 1.0.32<br>Данные хранятся на этом устройстве</p>
     </div>
   </section>
 </div>
@@ -1558,7 +1569,8 @@ $('codeGo').onclick=()=>{const raw=$('codeIn').value.trim(),m=raw.match(/ПРК-
 /* ================= community (online) ================= */
 const CM={on:false,db:null,uid:null,room:null,canWrite:true,players:[],feed:[],open:[],jury:[],peers:[],doing:'на главной'};
 async function cmWrite(ref,data,merge){try{await(merge?ref.update(data):ref.set(data));return true}catch(e){if(e&&e.code==='invalid_argument'){CM.canWrite=false;toast('Нет прав на запись. Попроси владельца дать доступ «Участник»');renderPpl()}else if(e&&e.code==='quota_exceeded')toast('Хранилище сообщества заполнено');else toast('Не удалось отправить. Проверь связь');return false}}
-function post(kind,text){if(!CM.on||!CM.canWrite)return;cmWrite(CM.db.collection('feed').doc(uid()),{by:CM.uid,nick:S.nick||'Игрок',color:S.color,sym:S.sym,kind,text:String(text).slice(0,280),t:Date.now(),cheers:{}})}
+function pubCfg(){if(!S.pub)S.pub={ach:1,lvl:1,ev:1,ch:1,log:1};return S.pub}
+function post(kind,text){if(!CM.on||!CM.canWrite)return;const pc=pubCfg();if(kind&&kind!=='text'&&pc[kind]===0)return;if(kind==='log'&&pc.log===0)return;cmWrite(CM.db.collection('feed').doc(uid()),{by:CM.uid,nick:S.nick||'Игрок',color:S.color,sym:S.sym,kind,text:String(text).slice(0,280),t:Date.now(),cheers:{}})}
 let syncT=null,syncing=false,again=false;
 function syncPlayer(){if(!CM.on||!CM.canWrite)return;clearTimeout(syncT);syncT=setTimeout(async()=>{if(syncing){again=true;return}syncing=true;
   try{await CM.db.doc('players/'+CM.uid).set({nick:S.nick||'Игрок',color:S.color,sym:S.sym,lvl:level(),xp:S.xp,wk:wkey(),wxp:weekXp(),streak:streak(),badges:Object.keys(S.ach).length,trust:Math.round(S.trust),karma:S.karma,elo:S.elo,t:Date.now()})}catch(e){if(e&&e.code==='invalid_argument'){CM.canWrite=false;renderPpl()}}
@@ -1680,33 +1692,49 @@ function renderPpl(){const box=$('pplBody'),top=$('pplTop');
    '<h2>Рейтинг недели</h2>'+(rows.length?'<div class="podium">'+pod(top3[1],1)+pod(top3[0],0)+pod(top3[2],2)+'</div>':'<div class="empty"><b>Рейтинг пока пуст</b>Появится, когда игроки начнут записывать дела.</div>')+
    (rest.length?'<div class="board">'+rest.map((p,i)=>'<div class="r'+(p.id===CM.uid?' me':'')+'"><span class="pos">'+(i+4)+'</span>'+avaHTML(p.color,p.sym,'s')+'<span class="nm">'+nm(p)+'<small>уровень '+(p.lvl||1)+(p.streak?', серия '+p.streak:'')+(p.trust!==undefined?', доверие '+p.trust:'')+'</small></span><span class="v">'+p.v+'</span>'+pokeB(p)+'</div>').join('')+'</div>':'')+
    '<h2>Суд присяжных</h2><p class="lede">Три случайных игрока решают, похоже ли фото на выполнение. +3 кармы за вердикт.</p><div id="jury"></div>'+
-   '<div class="hrow"><h2>Лента</h2><button class="link" id="feedCfgBtn">Настроить</button></div><div class="seg" id="feedSeg"><button data-v="all">Все</button><button data-v="text">Записи</button><button data-v="ev">События</button><button data-v="mine">Мои</button></div>'+(CM.canWrite?'<div class="compose"><textarea id="postIn" rows="1" maxlength="280" placeholder="Как прошёл день?" aria-label="Новая запись"></textarea><button class="btn soc" id="postGo">Отправить</button></div>':'')+
+   '<div class="hrow"><h2>Лента</h2><button class="link" id="feedCfgBtn">Настроить</button></div><div class="seg" id="feedSeg"><button data-v="all">Все</button><button data-v="text">Записи</button><button data-v="ev">События</button><button data-v="mine">Мои</button></div><div class="chips fwho" id="feedWho"><button class="chip" data-v="all">Все игроки</button><button class="chip" data-v="friends">Друзья'+(Object.keys(S.friends||{}).length?' · '+Object.keys(S.friends).length:'')+'</button></div>'+(CM.canWrite?'<div class="compose"><textarea id="postIn" rows="1" maxlength="280" placeholder="Как прошёл день?" aria-label="Новая запись"></textarea><button class="btn soc" id="postGo">Отправить</button></div>':'')+
    '<div id="feed" style="margin-top:12px"></div>';
-  renderOnline();renderFeed();renderJury();const fcb=$('feedCfgBtn');if(fcb)fcb.onclick=feedSheet;const fsg=$('feedSeg');if(fsg)group(fsg,v=>{feedCfg().filter=v;save();renderFeed()});
+  renderOnline();renderFeed();renderJury();const fcb=$('feedCfgBtn');if(fcb)fcb.onclick=feedSheet;const fsg=$('feedSeg');if(fsg)group(fsg,v=>{feedCfg().filter=v;save();renderFeed()});const fwh=$('feedWho');if(fwh)group(fwh,v=>{feedCfg().who=v;save();renderFeed()});
   box.querySelectorAll('.poke').forEach(b=>b.onclick=()=>{$('newCh').click();setTimeout(()=>{const c=$('cWho')&&$('cWho').querySelector('[data-v="'+CSS.escape(b.dataset.p)+'"]');c&&c.click()},60)});
   const pi=$('postIn');if(pi){pi.value=postDraft;pi.oninput=()=>{postDraft=pi.value;pi.style.height='auto';pi.style.height=pi.scrollHeight+'px'};$('postGo').onclick=async()=>{const t=pi.value.trim();if(!t)return;$('postGo').disabled=true;const ok=await cmWrite(CM.db.collection('feed').doc(uid()),{by:CM.uid,nick:S.nick||'Игрок',color:S.color,sym:S.sym,kind:'text',text:t.slice(0,280),t:Date.now(),cheers:{}});if(ok){postDraft='';if(!S.seen.firstPost){S.seen.firstPost=1;award(20,'Первая запись в ленте')}else toast('Опубликовано')}$('postGo').disabled=false}}
   if(scroll!==null)scrollTo(0,scroll)}
 let postDraft='';
 /* feed: flat serious list with filters and settings */
 const FEED_TAG={ach:['значок','h'],lvl:['уровень','h'],ev:['событие','s'],ch:['вызов','b'],log:['дело','m']};
-function feedCfg(){if(!S.feedCfg)S.feedCfg={filter:'all',ach:1,ch:1,log:1,compact:0,n:40};return S.feedCfg}
-function feedVisible(p){const c=feedCfg(),k=p.kind||'text';if(c.filter==='mine'&&p.by!==CM.uid)return false;if(c.filter==='text'&&k!=='text')return false;if(c.filter==='ev'&&k==='text')return false;
+function feedCfg(){if(!S.feedCfg)S.feedCfg={filter:'all',ach:1,ch:1,log:1,compact:0,n:40};const c=S.feedCfg;if(!c.who)c.who='all';if(!c.hide)c.hide={};if(c.off===undefined)c.off=0;return c}
+function friends(){if(!S.friends)S.friends={};return S.friends}
+const isFriend=id=>!!friends()[id];
+function feedVisible(p){const c=feedCfg(),k=p.kind||'text';if(p.by!==CM.uid&&c.hide[p.by])return false;if(p.by!==CM.uid&&c.who==='friends'&&!isFriend(p.by))return false;if(c.filter==='mine'&&p.by!==CM.uid)return false;if(c.filter==='text'&&k!=='text')return false;if(c.filter==='ev'&&k==='text')return false;
   if(k==='ach'||k==='lvl')return !!c.ach;if(k==='ch')return !!c.ch;if(k==='log'||k==='ev')return !!c.log;return true}
 function renderFeed(){const f=$('feed');if(!f)return;const c=feedCfg();const seg=$('feedSeg');if(seg)seg.querySelectorAll('[data-v]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===c.filter));
+  const cw=$('feedWho');if(cw)cw.querySelectorAll('[data-v]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.v===c.who));
+  ['feedSeg','feedWho'].forEach(id=>{const x=$(id);if(x)x.hidden=!!c.off});const cmp=document.querySelector('#pplBody .compose');if(cmp)cmp.hidden=!!c.off;
+  if(c.off){f.className='';f.innerHTML='<div class="empty"><b>Лента выключена</b>Записи и события игроков не показываются. <button class="link" id="feedOn">Включить</button></div>';const b=$('feedOn');if(b)b.onclick=()=>{c.off=0;save();renderPpl()};return}
   const list=CM.feed.filter(feedVisible).slice(0,c.n||40);
-  if(!list.length){f.innerHTML='<div class="empty"><b>'+(CM.feed.length?'По этому фильтру пусто':'Лента пока пустая')+'</b>'+(CM.feed.length?'Выбери «Все» или измени настройки ленты.':'Здесь появятся записи и события игроков. Напиши первым.')+'</div>';return}
+  if(!list.length){f.className='';f.innerHTML='<div class="empty"><b>'+(CM.feed.length?(c.who==='friends'?'У друзей пока тихо':'По этому фильтру пусто'):'Лента пока пустая')+'</b>'+(CM.feed.length?(c.who==='friends'?'Добавь друзей через меню «⋯» у записи или выбери «Все».':'Выбери «Все» или измени настройки ленты.'):'Здесь появятся записи и события игроков. Напиши первым.')+'</div>';return}
   const HEART='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z"/></svg>';
   f.className='flist'+(c.compact?' compact':'');f.innerHTML='';
   list.forEach(p=>{const ch=Object.keys(p.cheers||{}),mine=ch.includes(CM.uid),k=p.kind||'text',ev=k!=='text',tag=FEED_TAG[k],d=document.createElement('div');d.className='fpost'+(ev?' ev':'')+(p.by===CM.uid?' me':'');const name=p.by===CM.uid?(S.nick||'Ты'):(p.nick||'Игрок');
-    d.innerHTML=(c.compact?'':avaHTML(p.color,p.sym,'s'))+'<div class="fbody"><div class="fhd"><b></b>'+(tag?'<span class="ftag '+tag[1]+'">'+tag[0]+'</span>':'')+'<small>'+ago(p.t)+'</small></div><div class="ftx"></div><div class="fft"><button class="cheer'+(mine?' on':'')+'" aria-pressed="'+mine+'" aria-label="Лайк">'+HEART+'<span>'+(ch.length||'')+'</span></button>'+(p.by===CM.uid?'<button class="link del" data-del>Удалить</button>':'')+'</div></div>';
+    d.innerHTML=(c.compact?'':avaHTML(p.color,p.sym,'s'))+'<div class="fbody"><div class="fhd"><b></b>'+(p.by!==CM.uid&&isFriend(p.by)?'<span class="ftag m">друг</span>':'')+(tag?'<span class="ftag '+tag[1]+'">'+tag[0]+'</span>':'')+'<small>'+ago(p.t)+'</small>'+(p.by!==CM.uid?'<button class="fmenu" aria-label="Ещё" data-menu>⋯</button>':'')+'</div><div class="ftx"></div><div class="fft"><button class="cheer'+(mine?' on':'')+'" aria-pressed="'+mine+'" aria-label="Лайк">'+HEART+'<span>'+(ch.length||'')+'</span></button>'+(p.by===CM.uid?'<button class="link del" data-del>Удалить</button>':'')+'</div></div>';
+    const mb=d.querySelector('[data-menu]');if(mb)mb.onclick=()=>feedPersonSheet(p);
     d.querySelector('.fhd b').textContent=name;d.querySelector('.ftx').textContent=p.text;
     const cb=d.querySelector('.cheer');cb.onclick=async()=>{if(!CM.canWrite||mine)return;cb.classList.add('on','pop');const ok=await cmWrite(CM.db.doc('feed/'+p.id),{cheers:{[CM.uid]:true}},true);if(ok&&p.by!==CM.uid){S.c.cheer++;award(2,'Лайк поставлен',cb)}};
     const del=d.querySelector('[data-del]');if(del)del.onclick=()=>confirmSheet('Удалить запись?','Она пропадёт из ленты у всех.','Удалить',()=>CM.db.doc('feed/'+p.id).delete().catch(()=>toast('Не удалось удалить')),true);
     f.appendChild(d)})}
+function feedPersonSheet(p){const c=feedCfg(),fr=isFriend(p.by);sheet('<h3>'+esc(p.nick||'Игрок')+'</h3><p class="lede" style="margin:0 0 12px">'+(fr?'В друзьях. Записи друзей можно смотреть отдельно: «Друзья» над лентой.':'Не в друзьях.')+'</p><div class="sbtns" style="flex-direction:column;align-items:stretch"><button class="btn '+(fr?'':'soc')+'" id="fpFriend">'+(fr?'Убрать из друзей':'В друзья')+'</button><button class="btn" id="fpHide">Скрыть записи '+esc(p.nick||'игрока')+'</button><button class="btn" id="fpChal">Бросить вызов</button><button class="btn ghost" id="fpX">Закрыть</button></div>');
+  $('fpFriend').onclick=()=>{if(fr)delete friends()[p.by];else friends()[p.by]=1;save();closeSheet();renderFeed();toast(fr?'Убран из друзей':'Теперь в друзьях')};
+  $('fpHide').onclick=()=>{c.hide[p.by]=p.nick||'Игрок';save();closeSheet();renderFeed();toast('Скрыто. Вернуть можно в настройках ленты')};
+  $('fpChal').onclick=()=>{closeSheet();setTimeout(()=>{$('newCh').click();setTimeout(()=>{const x=$('cWho')&&$('cWho').querySelector('[data-v="'+CSS.escape(p.by)+'"]');x&&x.click()},60)},350)};$('fpX').onclick=closeSheet}
 function feedSheet(){const c=feedCfg();const sw=(id,label,on,sub)=>'<div class="hsrow"><button class="sw" data-k="'+id+'" aria-pressed="'+!!on+'"><i></i></button><span class="t">'+label+(sub?'<small>'+sub+'</small>':'')+'</span></div>';
-  sheet('<h3>Лента</h3><p class="lede" style="margin:0 0 12px">Что показывать среди записей игроков.</p><div id="fsList">'+sw('ach','Значки и уровни',c.ach,'«получил значок», «достиг уровня»')+sw('ch','Вызовы и дуэли',c.ch,'кто кого вызвал и кто выполнил')+sw('log','Дела и итоги дня',c.log,'крупные записи, цель дня, босс')+sw('compact','Компактный вид',c.compact,'без аватаров, мельче')+'</div><label class="lbl">Сколько записей</label><div class="chips" id="fsN">'+[20,40,80].map(n=>'<button class="chip" data-v="'+n+'" aria-pressed="'+((c.n||40)===n)+'">'+n+'</button>').join('')+'</div><div class="sbtns"><button class="btn" id="fsX">Закрыть</button></div>');
+  const pc=pubCfg(),hid=Object.entries(c.hide);const sw2=(id,label,on,sub)=>'<div class="hsrow"><button class="sw" data-p="'+id+'" aria-pressed="'+!!on+'"><i></i></button><span class="t">'+label+(sub?'<small>'+sub+'</small>':'')+'</span></div>';
+  sheet('<h3>Лента</h3><div class="setk" style="margin-top:4px">Что показывать</div><div id="fsList">'+sw('ach','Значки и уровни',c.ach,'«получил значок», «достиг уровня»')+sw('ch','Вызовы и дуэли',c.ch,'кто кого вызвал и кто выполнил')+sw('log','Дела и итоги дня',c.log,'крупные записи, цель дня, босс')+sw('compact','Компактный вид',c.compact,'без аватаров, мельче')+'</div><label class="lbl">Сколько записей</label><div class="chips" id="fsN">'+[20,40,80].map(n=>'<button class="chip" data-v="'+n+'" aria-pressed="'+((c.n||40)===n)+'">'+n+'</button>').join('')+'</div>'+
+   '<div class="setk" style="margin-top:14px">Что видно обо мне</div><p class="lede" style="margin:0 0 8px">Записи, которые ты пишешь сам, видят все. Остальное публикуется автоматически — можно выключить.</p><div id="fsPub">'+sw2('ach','Значки',pc.ach,'«получил значок»')+sw2('lvl','Уровни и ранги',pc.lvl,'«достиг уровня»')+sw2('ev','Итоги и события',pc.ev,'цель дня, босс, дуэли, карта')+sw2('ch','Вызовы',pc.ch,'принял, выполнил')+sw2('log','Крупные дела',pc.log,'записи от 50 XP')+'</div>'+
+   '<div class="setk" style="margin-top:14px">Скрытые игроки</div>'+(hid.length?'<div class="chips" id="fsHid">'+hid.map(([id,n])=>'<button class="chip" data-id="'+esc(id)+'">'+esc(n)+' ×</button>').join('')+'</div>':'<p class="lede" style="margin:0">Никого. Скрыть игрока можно через «⋯» у его записи.</p>')+
+   '<div class="sbtns"><button class="btn" id="fsOff">'+(c.off?'Включить ленту':'Выключить ленту')+'</button><button class="btn go" id="fsX">Готово</button></div>');
   $('fsList').querySelectorAll('.sw').forEach(b=>b.onclick=()=>{const k=b.dataset.k;c[k]=c[k]?0:1;b.setAttribute('aria-pressed',!!c[k]);save();renderFeed()});
-  group($('fsN'),v=>{c.n=+v;save();renderFeed()});$('fsX').onclick=closeSheet}
+  $('fsPub').querySelectorAll('.sw').forEach(b=>b.onclick=()=>{const k=b.dataset.p;pc[k]=pc[k]?0:1;b.setAttribute('aria-pressed',!!pc[k]);save()});
+  const fh=$('fsHid');if(fh)fh.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{delete c.hide[b.dataset.id];save();b.remove();renderFeed()});
+  group($('fsN'),v=>{c.n=+v;save();renderFeed()});$('fsOff').onclick=()=>{c.off=c.off?0:1;save();closeSheet();renderPpl()};$('fsX').onclick=closeSheet}
 function openCard(c){if(c.duel)return duelCard(c);const tk=c.takers||{},me=tk[CM.uid],mineC=c.by===CM.uid,expired=c.due<Date.now(),d=document.createElement('div');d.className='ch'+(expired?' fail':'');
   const done=Object.values(tk).filter(t=>t.st==='done'),inn=Object.values(tk);
   d.innerHTML='<div class="hd">'+avaHTML(c.color,c.sym,'s')+'<span class="who"><b></b> '+(c.to?(c.to===CM.uid?'бросил вызов тебе':'бросил вызов игроку '+esc(c.toNick||'')):'бросил вызов всем')+'<br>'+ago(c.t)+'</span></div><div class="bd"><div class="task"></div><div class="meta">'+chipsFor(c,me&&me.st==='done'?'done':expired?'fail':'x')+'<span class="chip-s">'+pl(inn.length,'участник','участника','участников')+'</span></div><div class="acts"></div></div>'+
@@ -2791,8 +2819,8 @@ function homeSheet(){const home=homeState();let order=homeOrder();const hide=Obj
   $('hsOk').onclick=()=>{home.order=order;home.hide=hide;save();closeSheet();renderIntro();toast('Главный экран настроен')}}
 
 /* ================= settings ================= */
-const APP_VER='1.0.31';
-const WHATSNEW=[['1.0.31','Итог дуэли: экран победы или поражения, «верю на слово» и обжалование'],['1.0.30','Карта мира: города, страны, континенты, свой флаг'],['1.0.29','Вёрстка на iPhone: верх не под часами, панель вкладок ниже и компактнее'],['1.0.28','Без сети открывается сразу: свои шрифты, оболочка из кэша'],['1.0.27','Герой моргает'],['1.0.26','Боты: втрое больше фраз, учитывают время суток и день недели'],['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
+const APP_VER='1.0.32';
+const WHATSNEW=[['1.0.32','Лента: друзья, скрытие игроков, что публиковать о себе, выключение'],['1.0.31','Итог дуэли: экран победы или поражения, «верю на слово» и обжалование'],['1.0.30','Карта мира: города, страны, континенты, свой флаг'],['1.0.29','Вёрстка на iPhone: верх не под часами, панель вкладок ниже и компактнее'],['1.0.28','Без сети открывается сразу: свои шрифты, оболочка из кэша'],['1.0.27','Герой моргает'],['1.0.26','Боты: втрое больше фраз, учитывают время суток и день недели'],['1.0.25','Меню настроек, экспорт и импорт данных, анимации и вибрация по желанию'],['1.0.24','Лента: ровный список, фильтры и настройки'],['1.0.23','Пять ботов: живое сообщество без сети'],['1.0.22','Знакомство без прокрутки, панели прижаты к низу'],['1.0.21','Пакет чтения: 46 материалов']];
 const VIB=navigator.vibrate?navigator.vibrate.bind(navigator):null;
 try{navigator.vibrate=p=>S&&S.vibe===false?false:VIB?VIB(p):false}catch(e){}
 function applyPrefs(){const h=document.documentElement;h.classList.toggle('nomotion',S.motion===false);h.classList.toggle('compact',!!S.compact)}
