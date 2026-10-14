@@ -1,6 +1,6 @@
 Прокачка — установка на iPhone/Android как приложения (без консоли, с телефона)
 
-В этой папке 7 файлов, подпапок нет: index.html, manifest.webmanifest, sw.js, icon-180.png, icon-192.png, icon-512.png, icon-512-maskable.png (и этот README).
+В этой папке: index.html, manifest.webmanifest, sw.js, icon-180.png, icon-192.png, icon-512.png, icon-512-maskable.png, папка fonts (шрифты Rubik и Nunito, лицензия OFL) и этот README.
 
 С телефона, через браузер:
 1. Открой github.com в Safari, войди. Нажми «аА» в адресной строке → «Запросить полную версию сайта» (на Android в Chrome: ⋮ → «Версия для ПК»).
