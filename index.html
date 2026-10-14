@@ -2431,7 +2431,9 @@ setInterval(()=>{renderHH();renderNow();const k=dkey();if(!S.days[k]){render()}}
 </script>
 
 <script>
-if('serviceWorker' in navigator){addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').then(r=>{r.addEventListener('updatefound',()=>{const w=r.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='activated'&&navigator.serviceWorker.controller){const t=document.getElementById('toast');if(t){t.innerHTML='Обновление установлено. Перезапусти приложение';t.classList.add('on');setTimeout(()=>t.classList.remove('on'),4000)}}})})}).catch(()=>{})})}
+if('serviceWorker' in navigator){addEventListener('load',()=>{const had=!!navigator.serviceWorker.controller;let reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{if(had&&!reloaded){reloaded=true;location.reload()}});
+  navigator.serviceWorker.register('./sw.js').then(r=>{setInterval(()=>r.update().catch(()=>{}),6*36e5);r.addEventListener('updatefound',()=>{const w=r.installing;w&&w.addEventListener('statechange',()=>{if(w.state==='activated'&&navigator.serviceWorker.controller){const t=document.getElementById('toast');if(t){t.innerHTML='Обновление установлено';t.classList.add('on');setTimeout(()=>t.classList.remove('on'),3000)}}})})}).catch(()=>{})})}
 </script>
 </body>
 </html>
