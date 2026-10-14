@@ -1085,7 +1085,7 @@ body.introlock{overscroll-behavior:none}
     <div class="seg themeseg" id="themeSeg"><button data-th="auto">Как в системе</button><button data-th="light">Светлая</button><button data-th="dark">Тёмная</button></div>
     <div class="sbtns" style="margin-top:10px"><button class="btn" id="homeCfg2">Главный экран</button><button class="btn" id="introAgain">Знакомство заново</button></div>
     <div class="sbtns"><button class="btn ghost" id="resetAll" style="margin:0 auto">Начать заново</button></div>
-    <p class="about">Прокачка · версия 1.0.22<br>Данные хранятся на этом устройстве</p>
+    <p class="about">Прокачка · версия 1.0.23<br>Данные хранятся на этом устройстве</p>
     </div>
   </section>
 </div>
@@ -1497,9 +1497,87 @@ function syncPlayer(){if(!CM.on||!CM.canWrite)return;clearTimeout(syncT);syncT=s
   try{await CM.db.doc('players/'+CM.uid).set({nick:S.nick||'Игрок',color:S.color,sym:S.sym,lvl:level(),xp:S.xp,wk:wkey(),wxp:weekXp(),streak:streak(),badges:Object.keys(S.ach).length,trust:Math.round(S.trust),karma:S.karma,elo:S.elo,t:Date.now()})}catch(e){if(e&&e.code==='invalid_argument'){CM.canWrite=false;renderPpl()}}
   syncing=false;if(again){again=false;syncPlayer()}},1500)}
 function presence(doing){CM.doing=doing||CM.doing;if(CM.room)CM.room.presence({nick:S.nick||'Игрок',color:S.color,sym:S.sym,lvl:level(),doing:CM.doing}).catch(()=>{})}
-async function initCommunity(){const cl=window.claude;if(!cl||!cl.use){renderPpl();return}
-  const[db,user]=await Promise.all([cl.use('db'),cl.use('user')]);if(!db||!user){renderPpl();return}
-  const id=await user.id();if(!id){renderPpl();return}
+/* ================= offline community: local db + room + bots (training mode) ================= */
+function deepMerge(a,b){Object.keys(b).forEach(k=>{const v=b[k];if(v&&typeof v==='object'&&!Array.isArray(v)&&a[k]&&typeof a[k]==='object'&&!Array.isArray(a[k]))deepMerge(a[k],v);else a[k]=v&&typeof v==='object'?JSON.parse(JSON.stringify(v)):v});return a}
+const LDB={subs:[],quiet:0,dirty:new Set(),
+  data(){if(!S.cm)S.cm={feed:{},challenges:{},jury:{},players:{}};['feed','challenges','jury','players'].forEach(k=>{S.cm[k]=S.cm[k]||{}});return S.cm},
+  persist(){DB.set('state',S)},
+  notify(col){if(this.quiet){this.dirty.add(col);return}this.subs.filter(s=>s.col===col).forEach(s=>{try{s.cb(this.snap(s))}catch(e){}})},
+  batch(fn){this.quiet++;try{fn()}finally{this.quiet--;if(!this.quiet){const d=[...this.dirty];this.dirty.clear();d.forEach(c=>this.notify(c))}}},
+  snap(s){const d=this.data()[s.col];let docs=Object.entries(d).map(([id,v])=>({id,data:()=>v}));if(s.order){const[f,dir]=s.order;docs.sort((a,b)=>((a.data()[f]||0)-(b.data()[f]||0))*(dir==='desc'?-1:1))}if(s.limit)docs=docs.slice(0,s.limit);return{docs}},
+  collection(col){const self=this,q={col,order:null,limit:null,wh:[],doc(id){return self.doc(col+'/'+id)},orderBy(f,dir){q.order=[f,dir||'asc'];return q},limit(n){q.limit=n;return q},where(f,op,v){q.wh.push([f,op,v]);return q},
+    onSnapshot(cb){const s={col,cb,order:q.order,limit:q.limit};self.subs.push(s);setTimeout(()=>cb(self.snap(s)),0);return()=>{self.subs=self.subs.filter(x=>x!==s)}},
+    async get(){const d=self.data()[col];const docs=Object.entries(d).filter(([id,v])=>q.wh.every(([f,op,val])=>{const x=v[f];return op==='=='?x===val:op==='<'?x<val:op==='>'?x>val:true})).map(([id,v])=>({id,data:()=>v}));return{docs}}};return q},
+  doc(path){const self=this,[col,id]=path.split('/');return{id,async set(v){const d=self.data()[col];d[id]=JSON.parse(JSON.stringify(v));self.persist();self.notify(col)},
+    async update(v){const d=self.data()[col];if(!d[id])throw{code:'not_found'};deepMerge(d[id],v);self.persist();self.notify(col)},
+    async delete(){const d=self.data()[col];delete d[id];self.persist();self.notify(col)}}},
+  prune(){const d=this.data(),cut=(col,n)=>{const ids=Object.keys(d[col]).sort((a,b)=>(d[col][b].t||0)-(d[col][a].t||0));ids.slice(n).forEach(i=>delete d[col][i])};cut('feed',60);cut('challenges',60);cut('jury',24)}};
+const BOT_LIST=[
+ {id:'bot:dimon',n:'Димон',color:'#e0457b',sym:'star',lvl0:3,rate:90,like:.8,post:1.1,fav:['push','squat'],duel:{push:1.1,squat:1.0,jump:1.6},strict:.1,hours:[7,23],posts:['Утро: {30-60} отжиманий до завтрака. Пошёл дальше.','{3-7} км в парке, темп нормальный.','Сегодня лень почти победила, но ритуалы закрыл.','Босс получил от меня {40-120} урона, кто ещё?','Турник у дома починили — {8-15} подтягиваний.'],doing:['на главной','смотрит вызовы','в профиле']},
+ {id:'bot:leha',n:'Лёха',color:'#f08a24',sym:'flame',lvl0:1,rate:35,like:.9,post:.5,fav:['squat','km'],duel:{push:.6,squat:.7,jump:1.2},strict:.05,hours:[9,22],posts:['Первая неделя в игре. Пока щуплый, но держусь.','{15-25} приседаний — больше не смог, но завтра добавлю.','Прочитал про правило 72, пошёл открывать вклад.','Лёг до 23:00 второй день подряд. Рекорд.'],doing:['читает ленту','на главной']},
+ {id:'bot:max',n:'Макс',color:'#3b7ddd',sym:'crown',lvl0:7,rate:140,like:.5,post:.8,fav:['push','pull','km'],duel:{push:1.4,squat:1.2,jump:1.8},strict:.25,hours:[6,22],posts:['{80-120} отжиманий за день, серия {20-40} дней.','{10-15} км, последний километр быстрее всех.','Посмотрел два фото присяжным — нормальные, засчитал.','Карта: занял ещё одну клетку, бонус растёт.'],doing:['в делах','смотрит вызовы','на главной']},
+ {id:'bot:serega',n:'Серёга',color:'#8a5cf0',sym:'moon',lvl0:2,rate:60,like:.7,post:.7,fav:['pages','study'],duel:{push:.8,squat:.9,jump:1.3},strict:.1,hours:[10,24],posts:['{20-40} страниц за вечер. Книга про Шеклтона — огонь.','Час учёбы вместо ленты. Голова шумит, но довольна.','Ответил на вопрос в «Почитать» с первого раза.','Записал {10-15} отжиманий, чтобы Ум не был единственной характеристикой.'],doing:['читает ленту','в профиле']},
+ {id:'bot:anton',n:'Антон',color:'#2a9fbc',sym:'leaf',lvl0:4,rate:100,like:.6,post:.9,fav:['km','squat'],duel:{push:1.0,squat:1.3,jump:1.5},strict:.15,hours:[6,21],posts:['{5-10} км утром, пока город спит.','Приседания: {50-80}, ноги гудят.','Копилка на машину: ещё {5-15} тысяч.','Вызов на {3-5} км открыт, жду желающих.'],doing:['на главной','в делах']}];
+const BOT_TASKS=[['{30-50} отжиманий до обеда',40],['{5-8} км за сегодня',50],['{40-60} приседаний',40],['{20-30} страниц книги',30],['Час без телефона после 21:00',25],['{8-12} подтягиваний',50],['Зарядка 10 минут три дня подряд',60]];
+const botTpl=s=>s.replace(/\{(\d+)-(\d+)\}/g,(m,a,b)=>String(+a+Math.floor(Math.random()*(+b-+a+1))));
+const botH=(a,b)=>hash(a+'|'+b)/4294967296;
+const BOTS={list:BOT_LIST,
+  st(){const d=LDB.data();if(!d.bots)d.bots={last:0,per:{},seen:{}};d.bots.per=d.bots.per||{};d.bots.seen=d.bots.seen||{};return d.bots},
+  by(id){return this.list.find(b=>b.id===id)},
+  per(b){const st=this.st();if(!st.per[b.id]){const xp=lvlXp(b.lvl0)+Math.floor(Math.random()*lvlXp(b.lvl0+1)*0.3);st.per[b.id]={xp,wxp:0,wk:wkey(),streak:1+Math.floor(Math.random()*12),trust:50+Math.floor(Math.random()*40),karma:Math.floor(xp/8),elo:1000+Math.floor((Math.random()-.4)*120),badges:Math.min(20,b.lvl0*2)}}return st.per[b.id]},
+  lvl(p){return Math.floor((1+Math.sqrt(1+4*p.xp/50))/2)},
+  player(b,t){const p=this.per(b);if(p.wk!==wkey()){p.wk=wkey();p.wxp=0}return{nick:b.n,color:b.color,sym:b.sym,lvl:this.lvl(p),xp:Math.round(p.xp),wk:p.wk,wxp:Math.round(p.wxp),streak:p.streak,badges:p.badges,trust:p.trust,karma:Math.round(p.karma),elo:p.elo,bot:1,t}},
+  seed(){const st=this.st();if(st.last)return;const now=Date.now();st.last=now-2*DAY;this.list.forEach(b=>this.per(b));LDB.batch(()=>{this.list.forEach(b=>{LDB.data().players[b.id]=this.player(b,now-Math.floor(Math.random()*6*36e5))});
+    // a few posts from the last two days so the feed is alive on first open
+    for(let i=0;i<6;i++){const b=this.list[Math.floor(Math.random()*this.list.length)];this.post(b,now-Math.floor(Math.random()*2*DAY))}
+    const b=this.list[2];this.openChallenge(b,now-5*36e5)});st.last=now},
+  post(b,t,kind,text){const id=uid();LDB.data().feed[id]={by:b.id,nick:b.n,color:b.color,sym:b.sym,kind:kind||'text',text:text||botTpl(b.posts[Math.floor(Math.random()*b.posts.length)]),t,cheers:{}};LDB.notify('feed')},
+  openChallenge(b,t){const[tt,xp]=BOT_TASKS[Math.floor(Math.random()*BOT_TASKS.length)],days=Math.random()<.6?1:3;LDB.data().challenges[uid()]={by:b.id,nick:b.n,color:b.color,sym:b.sym,task:botTpl(tt),xp,days,due:t+days*DAY,t,takers:{}};LDB.notify('challenges')},
+  directChallenge(b,t){const[tt,xp]=BOT_TASKS[Math.floor(Math.random()*BOT_TASKS.length)];LDB.data().challenges[uid()]={by:b.id,nick:b.n,color:b.color,sym:b.sym,task:botTpl(tt),xp,days:1,due:t+DAY,t,to:'me',toNick:S.nick||'Игрок',takers:{}};LDB.notify('challenges');this.poke('<b>'+esc(b.n)+'</b> бросил тебе вызов')},
+  duel24(b,t){const dtype=b.fav.find(x=>['push','squat','pull','km'].includes(x))||'push';LDB.data().challenges[uid()]={by:b.id,nick:b.n,color:b.color,sym:b.sym,task:'Дуэль: '+TYPES[dtype].n.toLowerCase()+' за сутки',duel:dtype,xp:40,days:1,due:t+DAY,t,to:'me',toNick:S.nick||'Игрок',takers:{[b.id]:{nick:b.n,color:b.color,sym:b.sym,st:'in',t,elo:this.per(b).elo}}};LDB.notify('challenges');this.poke('<b>'+esc(b.n)+'</b> вызвал тебя на дуэль')},
+  juryCase(b,t){const[tt]=BOT_TASKS[Math.floor(Math.random()*4)],task=botTpl(tt);const svg='<svg xmlns="http://www.w3.org/2000/svg" width="420" height="280"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b3360"/><stop offset="1" stop-color="#0e1124"/></linearGradient></defs><rect width="420" height="280" fill="url(#g)"/><circle cx="330" cy="70" r="36" fill="'+b.color+'" opacity=".9"/><rect x="40" y="150" width="340" height="14" rx="7" fill="#fff" opacity=".25"/><rect x="40" y="150" width="'+(120+Math.floor(Math.random()*200))+'" height="14" rx="7" fill="#5fe0be"/><text x="40" y="110" font-family="sans-serif" font-size="22" font-weight="700" fill="#fff">'+task.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</text><text x="40" y="200" font-family="sans-serif" font-size="14" fill="#aeb3cf">фото-подтверждение · тренировочный режим</text><text x="40" y="240" font-family="sans-serif" font-size="14" fill="#aeb3cf">'+new Date(t).toLocaleString('ru-RU')+'</text></svg>';
+    LDB.data().jury[uid()]={by:b.id,nick:b.n,color:b.color,sym:b.sym,task,ch:'',photo:'data:image/svg+xml;charset=utf-8,'+encodeURIComponent(svg),t,votes:{},verdict:null};LDB.notify('jury')},
+  gain(b,x,t){const p=this.per(b);if(p.wk!==wkey()){p.wk=wkey();p.wxp=0}p.xp+=x;p.wxp+=x;p.karma+=x*0.08;LDB.data().players[b.id]=this.player(b,t)},
+  poke(h){if(!document.hidden)setTimeout(()=>toast(h),400)},
+  react(b,t){const d=LDB.data(),seen=this.st().seen,H=36e5;
+    // likes on posts (mine and other bots'), 10 min – 6 h after the post
+    Object.entries(d.feed).forEach(([id,p])=>{if(p.by===b.id||t-p.t>2*DAY)return;const key=id+':'+b.id;if(p.cheers[b.id]||seen[key])return;const h=botH(id,b.id),delay=10*6e4+h*6*H;if(t<p.t+delay)return;seen[key]=1;const pr=p.by==='me'?b.like:b.like*.45;if(h<pr){p.cheers[b.id]=true;LDB.notify('feed')}});
+    Object.entries(d.challenges).forEach(([id,c])=>{const tk=c.takers=c.takers||{};
+      // accept my open / direct challenges, then complete them
+      if(c.by==='me'&&!c.duel&&(!c.to||c.to===b.id)&&c.due>t){const me=tk[b.id];if(!me){const key='acc:'+id+':'+b.id;if(seen[key])return;const h=botH(id,b.id+'a'),delay=20*6e4+h*8*H;if(t<c.t+delay)return;seen[key]=1;if(h<(c.to?.8:.5)){tk[b.id]={nick:b.n,color:b.color,sym:b.sym,st:'in',t};LDB.notify('challenges');this.poke('<b>'+esc(b.n)+'</b> принял твой вызов')}}
+        else if(me.st==='in'&&!me.rej){const h=botH(id,b.id+'d'),delay=2*H+h*18*H;if(t>=me.t+delay){me.st='done';me.pm=h<.5?'photo':'word';me.ai=me.pm==='photo'?1:0;me.dt=t;LDB.notify('challenges')}}}
+      // my 24h duel to the bot: accept, then submit a result
+      if(c.by==='me'&&c.duel&&c.to===b.id&&c.due>t){const me=tk[b.id];if(!me){const h=botH(id,b.id+'u'),delay=15*6e4+h*5*H;if(t<c.t+delay)return;tk[b.id]={nick:b.n,color:b.color,sym:b.sym,st:'in',t,elo:this.per(b).elo};LDB.notify('challenges');this.poke('<b>'+esc(b.n)+'</b> принял дуэль')}
+        else if(me.amt===undefined){const h=botH(id,b.id+'r'),delay=4*H+h*16*H;if(t>=me.t+delay){me.amt=this.amount(b,c.duel);me.pm='photo';me.ai=1;me.dt=t;LDB.notify('challenges')}}}
+      // bot's 24h duel to me: bot submits its result once I have accepted
+      if(c.by===b.id&&c.duel&&tk.me&&tk.me.st==='in'&&tk[b.id]&&tk[b.id].amt===undefined){const h=botH(id,b.id+'r'),delay=3*H+h*14*H;if(t>=tk.me.t+delay){tk[b.id].amt=this.amount(b,c.duel);tk[b.id].pm='photo';tk[b.id].ai=1;tk[b.id].dt=t;LDB.notify('challenges')}}
+      // bot's challenge where I asked the author (witness) to confirm
+      if(c.by===b.id&&!c.duel&&tk.me&&tk.me.st==='pending'){const h=botH(id,b.id+'w'),delay=30*6e4+h*5*H;if(t>=(tk.me.dt||tk.me.t||c.t)+delay){if(h<.9){tk.me.st='done';tk.me.ok=1;tk.me.okt=t}else{tk.me.st='in';tk.me.rej=1}LDB.notify('challenges')}}});
+    // jury votes on cases that are not his own
+    Object.entries(d.jury).forEach(([id,j])=>{if(j.by===b.id||j.verdict!==null&&j.verdict!==undefined)return;const votes=j.votes=j.votes||{};if(votes[b.id]!==undefined)return;const h=botH(id,b.id+'j'),delay=10*6e4+h*5*H;if(t<j.t+delay)return;
+      const limit=j.by==='me'?3:2;if(Object.keys(votes).filter(k=>k!=='me').length>=limit)return;votes[b.id]=h<1-b.strict?1:0;const vals=Object.values(votes);if(vals.length>=3){const yes=vals.filter(x=>x===1).length;j.verdict=yes*2>vals.length?1:0}LDB.notify('jury')})},
+  amount(b,type){const p=this.per(b),L=this.lvl(p);const base={push:12+L*6,squat:20+L*8,pull:2+L*1.5,km:2+L*0.8}[type]||20;return Math.round(base*(0.8+Math.random()*0.5)*(type==='km'?10:1))/(type==='km'?10:1)},
+  slot(t){const h=new Date(t).getHours();this.list.forEach(b=>{const act=h>=b.hours[0]&&h<b.hours[1];const n=(b.hours[1]-b.hours[0])*4;if(act){this.gain(b,b.rate/n*(0.5+Math.random()),t);if(Math.random()<b.post/n)this.post(b,t);if(Math.random()<0.1/n)this.openChallenge(b,t);if(Math.random()<0.06/n)this.directChallenge(b,t);if(Math.random()<0.04/n)this.duel24(b,t);if(Math.random()<0.07/n)this.juryCase(b,t);if(Math.random()<0.05/n){const p=this.per(b);p.streak++;this.post(b,t,'ev',['Закрыл цель дня','Закрыл все ритуалы дня','Новый рекорд дня: отжимания '+(20+Math.floor(Math.random()*60))][Math.floor(Math.random()*3)])}}
+      this.react(b,t)})},
+  peers(now){const slot=Math.floor(now/6e5),h=new Date(now).getHours();const ps=[{peer:'me',by:'me',isMe:true,sameTab:true,kind:'viewer',presence:{nick:S.nick||'Игрок',color:S.color,sym:S.sym,lvl:level(),doing:CM.doing}}];
+    this.list.forEach(b=>{const act=h>=b.hours[0]&&h<b.hours[1];if(!act)return;const r=botH(String(slot),b.id);if(r<.38)ps.push({peer:b.id,by:b.id,isMe:false,kind:'viewer',presence:{nick:b.n,color:b.color,sym:b.sym,lvl:this.lvl(this.per(b)),doing:b.doing[Math.floor(r*100)%b.doing.length]}})});return ps},
+  tick(){if(!CM.local)return;const st=this.st(),now=Date.now();let last=st.last||now-2*DAY;if(now-last>3*DAY)last=now-3*DAY;const STEP=15*6e4;
+    LDB.batch(()=>{for(let t=last+STEP;t<=now;t+=STEP)this.slot(t);this.list.forEach(b=>{LDB.data().players[b.id]=this.player(b,Math.max(LDB.data().players[b.id]?LDB.data().players[b.id].t:0,now-Math.floor(botH(String(Math.floor(now/36e5)),b.id)*5*36e5)))});LDB.prune()});
+    st.last=now;CM.peers=this.peers(now);renderOnline();LDB.persist()}};
+const LROOM={cb:null,async emit(topic,d){if(topic!=='duel'||!d)return;if(d.k==='inv'){const b=BOTS.by(d.to);if(!b)return;setTimeout(()=>{if(!DU||DU.id!==d.id||DU.started)return;onDuelMsg({data:{k:'acc',id:d.id,to:'me',startAt:Date.now()+4000},peer:b.id,isMe:false})},1500+Math.random()*2500)}},
+  on(){},onPeers(cb){this.cb=cb;cb({peers:CM.peers});return()=>{this.cb=null}},async presence(p){const me=CM.peers.find(x=>x.isMe);if(me)Object.assign(me.presence,p)},
+  async join(name){const b=BOTS.by(DU&&DU.opp);let n=0,cb=null,iv=null;const push=()=>{cb&&cb({peers:[{peer:b?b.id:'x',isMe:false,presence:{nick:b?b.n:'Соперник',n}}]})};
+    iv=setInterval(()=>{const now=Date.now();if(!DU||now<DU.startAt||now>DU.startAt+30000)return;const rate=(b&&b.duel[DU.ex])||0.9;if(Math.random()<rate*0.25)n++;push()},250);
+    return{async presence(){},onPeers(c){cb=c;push();return()=>{cb=null}},async leave(){clearInterval(iv);cb=null}}}};
+async function initLocalCommunity(){LDB.data();CM.db=LDB;CM.uid='me';CM.on=true;CM.local=true;CM.canWrite=true;
+  LDB.collection('players').orderBy('t','desc').limit(200).onSnapshot(s=>{CM.players=s.docs.map(d=>({id:d.id,...d.data()}));renderPpl();renderCh();renderBoss()});
+  LDB.collection('feed').orderBy('t','desc').limit(40).onSnapshot(s=>{const prev=CM.feed.length;CM.feed=s.docs.map(d=>({id:d.id,...d.data()}));noticeFeed(prev);renderPpl()});
+  LDB.collection('challenges').orderBy('t','desc').limit(60).onSnapshot(s=>{CM.open=s.docs.map(d=>({id:d.id,...d.data()}));creditMine();renderCh()});
+  LDB.collection('jury').orderBy('t','desc').limit(30).onSnapshot(s=>{CM.jury=s.docs.map(d=>({id:d.id,...d.data()}));renderJury()});
+  BOTS.seed();syncPlayer();CM.room=LROOM;BOTS.tick();presence();setInterval(()=>BOTS.tick(),5*6e4);document.addEventListener('visibilitychange',()=>{if(!document.hidden)BOTS.tick()});renderPpl();renderCh()}
+async function initCommunity(){const cl=window.claude;if(!cl||!cl.use)return initLocalCommunity();
+  const[db,user]=await Promise.all([cl.use('db'),cl.use('user')]);if(!db||!user)return initLocalCommunity();
+  const id=await user.id();if(!id)return initLocalCommunity();
   CM.db=db;CM.uid=id;CM.on=true;const cw=await user.can('data.write');if(cw===false)CM.canWrite=false;
   db.collection('players').orderBy('t','desc').limit(200).onSnapshot(s=>{CM.players=s.docs.map(d=>({id:d.id,...d.data()}));renderPpl();renderCh();renderBoss()},()=>{});
   db.collection('feed').orderBy('t','desc').limit(40).onSnapshot(s=>{const prev=CM.feed.length;CM.feed=s.docs.map(d=>({id:d.id,...d.data()}));noticeFeed(prev);renderPpl()},()=>{});
@@ -1524,7 +1602,7 @@ function renderPpl(){const box=$('pplBody'),top=$('pplTop');
   const wk=wkey(),rows=CM.players.map(p=>({...p,v:p.wk===wk?p.wxp||0:0})).sort((a,b)=>b.v-a.v);
   const scroll=box.querySelector('#feed')?scrollY:null;
   if(!top.querySelector('#onlineBox'))top.innerHTML='<div class="online" id="onlineBox"></div>';
-  const mi=rows.findIndex(p=>p.id===CM.uid);$('pplS').textContent=(rows.length?pl(rows.length,'игрок','игрока','игроков')+' на неделе':'Пока никого')+(mi>=0?' · ты на '+(mi+1)+' месте':'');
+  const mi=rows.findIndex(p=>p.id===CM.uid);$('pplS').textContent=(rows.length?pl(rows.length,'игрок','игрока','игроков')+' на неделе':'Пока никого')+(mi>=0?' · ты на '+(mi+1)+' месте':'')+(CM.local?' · тренировочный режим':'');
   const nm=p=>esc(p.id===CM.uid?(S.nick||'Ты'):(p.nick||'Игрок')),pokeB=p=>p.id!==CM.uid&&CM.canWrite?'<button class="poke" data-p="'+esc(p.id)+'">'+(canDuel(p.lvl)?'Вызов':'🔒')+'</button>':'';
   const top3=rows.slice(0,3),rest=rows.slice(3,20);
   const pod=(p,i)=>p?'<div class="pod p'+(i+1)+(p.id===CM.uid?' me':'')+'">'+avaHTML(p.color,p.sym,i===0?'':'s')+'<span class="nm">'+nm(p)+'</span><span class="v">'+p.v+'</span><span class="pos">'+['1 место','2 место','3 место'][i]+'</span>'+pokeB(p)+'</div>':'<div class="pod empty-pod"></div>';
@@ -2576,7 +2654,7 @@ function homeSheet(){const home=homeState();let order=homeOrder();const hide=Obj
 function render(){terrTick();renderOnb();renderMapBlock();renderRead();renderLock();renderHero();renderHH();renderHabits();renderQuests();renderWeek();renderBoss();renderGoals();renderBets();renderCaps();renderMood();renderNow();renderRecap();renderQuick();renderHints();renderRoul();renderHeat();renderCh();renderMe();renderTrust();renderPath();renderShield();renderTools();renderPiggy();renderDates();renderIntro()}
 const V=['day','ch','ppl','life','me'],DOING={day:'на главной',ch:'смотрит вызовы',ppl:'читает ленту',life:'в делах',me:'в профиле'};
 function go(v){if(v!=='day'&&typeof introOn==='function'&&S&&introOn('day')){toast('Сначала закончи знакомство с главным экраном');return}const changed=curView!==v;curView=v;V.forEach(k=>{const el=$('v-'+k);el.hidden=k!==v;if(k===v&&changed){el.classList.remove('vin');void el.offsetWidth;el.classList.add('vin')}});$('topHero').hidden=v!=='day';const ind=$('tabInd');if(ind)ind.style.transform='translateX('+V.indexOf(v)*100+'%)';if(changed&&navigator.vibrate)navigator.vibrate(6);document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.v===v));
-  if(v==='ppl'){S.seen.feed=Date.now();$('bdPpl').hidden=true;DB.set('state',S)}presence(DOING[v]);try{localStorage.setItem('pt',v)}catch(e){}renderIntro()}
+  if(v==='ppl'){S.seen.feed=Date.now();$('bdPpl').hidden=true;DB.set('state',S)}if(CM.local&&(v==='ppl'||v==='ch'))BOTS.tick();presence(DOING[v]);try{localStorage.setItem('pt',v)}catch(e){}renderIntro()}
 document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{go(b.dataset.v);scrollTo({top:0})});
 function seed(){S.ch.push({id:uid(),task:'30 приседаний до обеда',xp:25,days:1,due:Date.now()+DAY,from:'Пример',status:'active',mine:false,ex:true,t:Date.now()})}
 setInterval(()=>{renderHH();renderNow();const k=dkey();if(!S.days[k]){render()}},60000);
