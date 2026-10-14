@@ -1,12 +1,15 @@
-Прокачка — установка на iPhone/Android как приложения
+Прокачка — установка на iPhone/Android как приложения (без консоли, с телефона)
 
-1. Создай на GitHub публичный репозиторий, например prokachka.
-2. Загрузи в него все файлы из этой папки: index.html, manifest.webmanifest, sw.js и папку icons.
-   (Add file → Upload files, или git push.)
-3. Settings → Pages → Build and deployment: Source = Deploy from a branch, Branch = main, папка / (root) → Save.
-4. Через 1–2 минуты открой в Safari на iPhone: https://ТВОЙ_ЛОГИН.github.io/prokachka/
-5. Поделиться → «На экран "Домой"» → Добавить.
-6. Открой приложение с иконки один раз при интернете. Дальше работает без сети.
+В этой папке 7 файлов, подпапок нет: index.html, manifest.webmanifest, sw.js, icon-180.png, icon-192.png, icon-512.png, icon-512-maskable.png (и этот README).
 
-Обновления: замени index.html и sw.js новыми из следующего архива, остальное не трогай.
+С телефона, через браузер:
+1. Открой github.com в Safari, войди. Нажми «аА» в адресной строке → «Запросить полную версию сайта» (на Android в Chrome: ⋮ → «Версия для ПК»).
+2. Создай репозиторий: + → New repository. Имя: ЛОГИН.github.io (вместо ЛОГИН — твой логин GitHub). Public, галочка «Add a README». Create.
+   Такое имя включает GitHub Pages автоматически — настраивать ничего не нужно.
+3. В репозитории: Add file → Upload files → Choose your files → выбери все файлы из папки pwa (в Файлах зажми один файл, «Выбрать», отметь все) → Commit changes.
+4. Через 1–2 минуты открой в Safari: https://ЛОГИН.github.io/
+5. Поделиться → «На экран "Домой"» → Добавить. Открой с иконки один раз при интернете, дальше работает без сети.
+
+Обновление версии: загрузи новые index.html и sw.js тем же способом (Upload files → заменить). Остальное не трогай.
+Если репозиторий назван иначе (например prokachka): Settings → Pages → Source: Deploy from a branch → main → / (root) → Save; адрес будет https://ЛОГИН.github.io/prokachka/
 Сообщество (лента, дуэли онлайн, присяжные) работает только по ссылке на claude.ai; это офлайн-версия для личного прогресса.
