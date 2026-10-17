@@ -1,4 +1,4 @@
-Прокачка — установка на iPhone/Android как приложения (без консоли, с телефона)
+Самплан — установка на iPhone/Android как приложения (без консоли, с телефона)
 
 В этой папке: index.html, manifest.webmanifest, sw.js, icon-180.png, icon-192.png, icon-512.png, icon-512-maskable.png, папка fonts (шрифты Rubik и Nunito, лицензия OFL) и этот README.
 
