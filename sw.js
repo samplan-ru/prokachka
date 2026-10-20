@@ -1,4 +1,4 @@
-const V='prokachka-135187a3',H=V.slice(10),ST='prokachka-static-1',PREV='prokachka-prev',DATA=['./d-efb33aa41b.js','./d-99a046dfcf.js'];
+const V='prokachka-5e7d254f',H=V.slice(10),ST='prokachka-static-1',PREV='prokachka-prev',DATA=['./d-efb33aa41b.js','./d-99a046dfcf.js'];
 const isStatic=p=>/\/(fonts|voice)\/|\/d-[0-9a-f]+\.js$|\/icon-|\/og\./.test(p);
 const HTML=b=>new Response(b,{headers:{'Content-Type':'text/html; charset=utf-8'}});
 /* установка мгновенная: ничего не качаем (на iPhone долгую установку система обрывает); страницу берём, если её уже скачало приложение */
